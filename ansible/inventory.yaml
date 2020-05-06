@@ -1,0 +1,16 @@
+#[web]
+#orion
+##ubuntu
+#ur
+
+web:
+    vars:
+        # ansible_user: nick
+        #ansible_become: true
+        # ansible_python_interpreter: /usr/bin/python3
+        discord_bot_token: "Njk1NDY5NjQ0NjI2MTMzMDA0.Xoaqmw.HkLRo6D904dlntZLZQ4HCjxiH1A"
+        ansible_distribution: "Ubuntu"
+        ansible_become_pass: "001100"
+    hosts:
+        orion:
+        ur:

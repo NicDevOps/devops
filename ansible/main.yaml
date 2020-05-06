@@ -1,0 +1,155 @@
+---
+- hosts: orion
+  gather_facts: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  become: true
+  tasks:
+    # - ping:
+
+    # - name: whoami
+    #   command: whoami
+    #   register: output
+    
+    ###############################################################################################
+
+    # - name: Install prerequisites
+    #   apt:
+    #     name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg2' ,'software-properties-common']
+    #     update_cache: yes
+
+    # - name: Add Docker GPG key
+    #   apt_key: url=https://download.docker.com/linux/ubuntu/gpg
+    
+    # - name: Add Docker APT repository
+    #   apt_repository:
+    #     repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+
+    # - name: Install Docker
+    #   apt:
+    #     name: docker-ce
+    #     update_cache: yes
+
+    ###############################################################################################
+
+    # run app1
+
+    # - name: Remove image
+    #   docker_image:
+    #     state: absent
+    #     name: nick/app1
+    #     tag: latest
+
+    # - name: Build an image and push it to a private repo
+    #   docker_image:
+    #     name: nick/app1
+    #     build:
+    #       path: ../docker/app1/Dockerfile
+    #     # name: registry.ansible.com/chouseknecht/sinatra
+    #     # tag: nick/app1
+    #     # push: yes
+    #     source: build
+    
+    - name: Deploy Docker daemon.json.
+      copy:
+        src: files/daemon.json
+        dest: /etc/docker/daemon.json
+
+    - name: restart docker service
+      systemd:
+        state: restarted
+        # daemon_reload: yes
+        name: docker
+
+    - name: running hello-world container
+      docker_container:
+        detach: false
+        name: hello-world
+        image: hello-world
+      register: "hello_world_stdout"
+
+    - debug:
+        msg: "{{hello_world_stdout.ansible_facts.docker_container.Output.split('\n')}}"
+
+    ###############################################################################################
+
+    # - debug:
+    #     msg: "{{output.stdout_lines}}"
+
+    # - name: Install apache httpd  (state=present is optional)
+    #   apt:
+    #     name: apache2
+    #     state: present
+
+    # - name: Copy file with owner and permissions
+    #   copy:
+    #     src: echo_test.sh
+    #     dest: /tmp/echo_test.sh
+    #     owner: root
+    #     group: root
+    #     mode: '0755'
+
+    # - name: echo_test
+    #   command: /tmp/echo_test.sh
+    #   register: echo_test_output
+
+    # - debug:
+    #     msg: "{{echo_test_output.stdout_lines}}"
+
+
+    # - name: Write backup script for each app
+    #   shell: |
+    #     echo 'line one
+    #     line two
+    #     line three' >> /tmp/backup.sh
+
+    # - name: show echo output
+    #   shell: echo 'test'
+    #   register: myecho
+      
+    # - debug: msg="{{myecho.stdout}}"
+
+    # - name: Create /tmp/output.txt
+    #   command: touch /tmp/output.txt
+
+    # Example that prints the loopback address and gateway for each host
+    # - name: hello
+    #   debug:
+    #     msg: System {{ inventory_hostname }} has uuid {{ ansible_product_uuid }}
+
+    # - name: Remove file
+    #   command: rm -rf /tmp/ansible.txt
+    #   ignore_errors: yes
+
+    # - name: Create file
+    #   command: touch /tmp/ansible.txt
+    #   args:
+    #     creates: /tmp/ansible.txt
+
+    # - name: Install htop
+    #   apt:
+    #     name: htop
+    #     update_cache: yes
+
+    # - name: Install python3-pip
+    #   apt:
+    #     name: python3-pip
+    #     update_cache: yes
+
+    # - name: Install docker pip
+    #   pip:
+    #     name: "{{ item.name }}"
+    #     version: "{{ item.version }}"
+    #     state: present
+    #   with_items:
+    #     - { name: docker, version: 4.2.0 }
+    #     # - { name: docker-py, version: 1.10.6 }
+
+    # - name: Remove docker-py pip
+    #   pip:
+    #     name: "{{ item.name }}"
+    #     version: "{{ item.version }}"
+    #     state: absent
+    #   with_items:
+    #     - { name: docker-py, version: 1.10.6 }
+    #     # - { name: docker, version: 2.0.0 }

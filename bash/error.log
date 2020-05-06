@@ -1,0 +1,4 @@
+./error.sh: line 7: syntax error near unexpected token `('
+./error.sh: line 7: `    sum=(($sum+$i))'
+./error.sh: line 8: syntax error near unexpected token `done'
+./error.sh: line 8: `done'

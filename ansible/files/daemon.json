@@ -1,0 +1,3 @@
+{
+    "insecure-registries" : ["orion:5000"]
+}

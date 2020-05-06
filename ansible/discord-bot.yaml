@@ -1,0 +1,39 @@
+---
+- hosts: orion
+  gather_facts: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+#  become: true
+  tasks:
+    - ping:
+
+    - name: whoami
+      command: whoami
+      register: output
+
+    - debug:
+        msg: "{{output.stdout_lines}}"
+
+    - name: Build an image and push it to a private repo
+      docker_image:
+        build:
+          path: ~/projects/project-name/docker/discord-bot
+        name: orion:5000/discord-bot
+#        tag: v1
+        push: yes
+        source: build
+
+#    - name: running discord-bot container
+#      docker_container:
+#        state: absent
+#        force_kill: yes
+#        restart: yes
+#        detach: true
+#        name: discord-bot-instance1
+#        image: orion:5000/discord-bot
+#        env:
+#          DISCORD_BOT_TOKEN: "{{discord_bot_token}}"
+#      register: "hello_world_stdout"
+
+#    - debug:
+#        msg: "{{hello_world_stdout.ansible_facts.docker_container.Output.split('\n')}}"
