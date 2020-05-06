@@ -19,7 +19,6 @@ s = "Python syntax highlighting"
 print(s)
 ```
 
-
 | Tables        | Are           | Cool  |
 | ------------- |:-------------:| -----:|
 | col 3 is      | right-aligned | $1600 |
