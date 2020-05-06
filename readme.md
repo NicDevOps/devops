@@ -109,3 +109,7 @@ Changing the login shell for git
 Enter the new value, or press ENTER for the default
 	Login Shell [/bin/sh]: /usr/bin/git-shell
 ```
+git remote -v
+origin	git@github.com:NicDevOps/devops.git (fetch)
+origin	git@github.com:NicDevOps/devops.git (push)
+nick@ubuntu:~/projects/devops$ git remote add home git@gitserver:/opt/git/devops.git
