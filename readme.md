@@ -71,3 +71,41 @@ https://itnext.io/wildcard-lets-encrypt-certificate-2b6133a1acdf
                \    _______________                /
 ~~~~~~~~~~~~~~~~\_________________________________/~~~~~~~~~~~~~~~~~~~~~
 ```
+# to change shell for user git
+
+sudo chsh git
+
+# Changing the login shell for git
+# Enter the new value, or press ENTER for the default
+# change the user shell to /bin/sh
+
+Login Shell [/usr/bin/git-shell]: /bin/sh
+
+```console
+cd /opt/git
+mkdir devops.git
+cd devops.git
+ls -als
+total 8
+4 drwxrwxr-x 2 git git 4096 May  5 21:10 .
+4 drwxr-xr-x 4 git git 4096 May  5 21:10 ..
+git init --bare .
+Initialized empty Git repository in /opt/git/devops.git/
+ls -als
+total 40
+4 drwxrwxr-x 7 git git 4096 May  5 21:11 .
+4 drwxr-xr-x 4 git git 4096 May  5 21:10 ..
+4 drwxrwxr-x 2 git git 4096 May  5 21:11 branches
+4 -rw-rw-r-- 1 git git   66 May  5 21:11 config
+4 -rw-rw-r-- 1 git git   73 May  5 21:11 description
+4 -rw-rw-r-- 1 git git   23 May  5 21:11 HEAD
+4 drwxrwxr-x 2 git git 4096 May  5 21:11 hooks
+4 drwxrwxr-x 2 git git 4096 May  5 21:11 info
+4 drwxrwxr-x 4 git git 4096 May  5 21:11 objects
+4 drwxrwxr-x 4 git git 4096 May  5 21:11 refs
+
+sudo chsh git
+Changing the login shell for git
+Enter the new value, or press ENTER for the default
+	Login Shell [/bin/sh]: /usr/bin/git-shell
+```
