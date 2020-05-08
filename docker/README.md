@@ -11,7 +11,7 @@
 ```
 ## Run docker using multiple parameters
 #
-## -d for detatch mode (in background), named 'blue-app',
+### -d for detatch mode (in background), named 'blue-app',
 ### port mapped on host 38282 and container on 8080, 
 ### -e for seting up environment variable 'APP_COLOR' to blue
 ### on image 'kodekloud/simple-webapp'
