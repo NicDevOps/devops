@@ -36,7 +36,7 @@ commit, use the following command. Warning, do not use this on
 a shared repository.
 
 ```console
-git commit --amend --no-edit ; git push -f
+git commit --amend --no-edit ; git push home master -f
 ```
 
 ```console
