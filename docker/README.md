@@ -1,4 +1,15 @@
-# Run docker using multiple parameters
+# Basic docker commands and syntaxe examples
+#
+```console
+                     _-----o----_
+            /|__/|  /            |
+            |_  _/ /              |
+              | |_|          () __|
+               |               |_
+                |     %__%       /
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
+## Run docker using multiple parameters
 #
 ## -d for detatch mode (in background), named 'blue-app',
 ### port mapped on host 38282 and container on 8080, 
