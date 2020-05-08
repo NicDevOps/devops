@@ -114,5 +114,5 @@ Enter the new value, or press ENTER for the default
 git remote -v
 origin	git@github.com:NicDevOps/devops.git (fetch)
 origin	git@github.com:NicDevOps/devops.git (push)
-nick@ubuntu:~/projects/devops$ git remote add home git@gitserver:/opt/git/devops.git
+git remote add home git@gitserver:/opt/git/devops.git
 ```
