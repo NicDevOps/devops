@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ~/projects/project-name/cicd/functions.sh
+source ~/projects/devops/cicd/functions.sh
 
 echo -e "$BLUE######################################################################################$END"
 echo -e "$BLUE#                                 RUN STAGE                                          #$END"
@@ -15,5 +15,5 @@ echo -e "                                   |                |_"
 echo -e "                                    |     %__%       /"
 echo -e "$BLUE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$END"
 
-#~/projects/project-name/docker/app1/run.sh
+#~/projects/devops/docker/app1/run.sh
 
