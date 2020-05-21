@@ -36,7 +36,7 @@ def light_on(led):
     toggle_on(led)
     time.sleep(0.5)
     toggle_off(led)
-
+    time.sleep(0.5)
 
 def RCtime(RCpin):
     reading = 0

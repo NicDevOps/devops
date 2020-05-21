@@ -6,5 +6,5 @@ echo -e "$MAGENTA###############################################################
 echo -e "$MAGENTA#                                  BUILD STAGE                                       #$END"
 echo -e "$MAGENTA######################################################################################$END"
 
-#~/projects/devops/docker/app1/build.sh
+~/projects/devops/apps/rpi/build.sh
 

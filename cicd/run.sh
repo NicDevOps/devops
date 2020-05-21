@@ -15,5 +15,5 @@ echo -e "                                   |                |_"
 echo -e "                                    |     %__%       /"
 echo -e "$BLUE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$END"
 
-#~/projects/devops/docker/app1/run.sh
+~/projects/devops/apps/rpi/run.sh
 
