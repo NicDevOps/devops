@@ -6,3 +6,4 @@ echo 'running rpi app..'
 
 ssh pi@rpi 'GIT_WORK_TREE=/home/pi/projects/devops git checkout -f'
 
+echo 'works!'
