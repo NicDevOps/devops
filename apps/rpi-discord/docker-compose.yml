@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  rpi-discord:
+    build: .
+    image: rpi-discord:latest
+
+
+#   redis:
+#     image: redis:latest
+#     deploy:
+#       replicas: 1
+#     configs:
+#       - my_config
+#       - my_other_config
+# configs:
+#   my_config:
+#     file: ./my_config.txt
+#   my_other_config:
+#     external: true
