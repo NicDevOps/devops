@@ -15,5 +15,5 @@ echo -e "                                   |                |_"
 echo -e "                                    |     %__%       /"
 echo -e "$BLUE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$END"
 
-~/projects/devops/apps/rpi/run.sh
+~/projects/devops/apps/rpi-discord/run.sh
 
