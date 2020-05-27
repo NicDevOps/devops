@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/projects/devops/cicd/functions.sh
+
 echo -e "$MAGENTA######################################################################################$END"
 echo -e "$MAGENTA#                                  BUILD: RPI-DISCORD                                #$END"
 echo -e "$MAGENTA######################################################################################$END"
