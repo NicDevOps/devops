@@ -116,3 +116,57 @@ origin	git@github.com:NicDevOps/devops.git (fetch)
 origin	git@github.com:NicDevOps/devops.git (push)
 git remote add home git@gitserver:/opt/git/devops.git
 ```
+
+# scan your network for the new rpi ip address
+# watch nmap -sP 192.168.0.0/24
+
+# editing hosts file for rpi
+sudo vim /etc/hosts # update rpi ip address
+
+# fixing known_hosts error
+ssh-keygen -f "/home/<user>/.ssh/known_hosts" -R "rpi"
+ssh-keygen -f "/home/<user>/.ssh/known_hosts" -R "192.168.0.120"
+
+# ssh into rpi
+defaults
+user: ssh pi@rpi
+password: raspberry
+
+# copy ssh public key
+ssh-copy-id pi@rpi
+
+# congrats!!!!
+
+
+ssh-keygen -t rsa -b 4096 -C "pi@rpi"
+
+# install docker and docker-compose
+
+curl -sSL https://get.docker.com | sh
+
+# fix user permissions to use docker
+
+sudo usermod -aG docker pi
+
+# run a test container using docker
+
+# x86
+docker run hello-world
+
+# arm32v6
+
+docker run --rm -it arm32v6/bash
+
+
+
+sudo apt-get install -y libffi-dev libssl-dev
+
+sudo apt-get install -y python3 python3-pip
+
+sudo apt-get remove python-configparser
+
+sudo pip3 install docker-compose
+
+# Architectures other than amd64?
+
+https://github.com/docker-library/official-images#architectures-other-than-amd64
