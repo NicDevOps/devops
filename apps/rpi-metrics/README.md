@@ -1,4 +1,4 @@
 # How to run
-```javascript
+```python
 FLASK_APP=app.py flask run --host 0.0.0.0
 ```
