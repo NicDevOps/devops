@@ -26,8 +26,6 @@ services:
     user: "1000"
     volumes:
       - ./data:/var/lib/grafana
-      - type: volume
-        source: ./grafana
-        target: /etc/grafana
+      - ./grafana:/etc/grafana
     restart: always
 
