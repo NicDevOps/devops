@@ -8,3 +8,8 @@ scrape_configs:
     - job_name: 'rpi'
       static_configs:
         - targets: [rpi:5000]
+
+    - job_name: 'rpi-nodeexporter'
+      static_configs:
+        - targets: [rpi:9100]
+
