@@ -10,6 +10,6 @@ set -x
 
 ssh pi@rpi 'git -C /home/pi/projects/devops checkout -f'
 
-docker context create rpi ‐‐docker “host=ssh://pi@rpi”
+# docker context create rpi ‐‐docker “host=ssh://pi@rpi”
 
 # ssh pi@rpi 'cd /home/pi/projects/devops/apps/rpi-discord; docker-compose build'
