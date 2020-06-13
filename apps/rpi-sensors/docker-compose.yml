@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  sensors:
+    image: sensors
+    build: .
+    restart: always
+    network_mode: host
+    devices:
+      - "/dev/mem:/dev/mem"
+    privileged: true
+    ports:
+      - 5000:5000
+
