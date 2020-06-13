@@ -170,3 +170,13 @@ sudo pip3 install docker-compose
 # Architectures other than amd64?
 
 https://github.com/docker-library/official-images#architectures-other-than-amd64
+
+          ##         .
+    ## ## ##        ==
+## ## ## ## ##     ===
+/"""""""""""""""""\___/ ===
+{                       / ===-
+\______ O           __/
+ \    \         __/
+  \____\_______/
+
