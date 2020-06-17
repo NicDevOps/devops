@@ -10,7 +10,7 @@ set -x
 
 #cd /home/pi/projects/devops/apps/rpi-sensors
 
-#docker-compose restart
+docker-compose --context rpi restart
 
 # docker-compose --context rpi up -d
 
