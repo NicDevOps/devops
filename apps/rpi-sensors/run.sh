@@ -8,7 +8,7 @@ echo -e "$RED###################################################################
 
 set -x
 
-cd /home/pi/projects/devops/apps/rpi-sensors
+cd /home/git/projects/devops/apps/rpi-sensors
 
 docker-compose --context rpi restart
 
