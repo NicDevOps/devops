@@ -8,5 +8,5 @@ echo -e "$RED###################################################################
 
 # set -x
 
-# ssh pi@rpi 'git -C /home/pi/projects/devops checkout -f'
+ssh pi@rpi 'git -C /home/pi/projects/devops checkout -f'
 
