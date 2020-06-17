@@ -6,14 +6,9 @@ echo -e "$RED###################################################################
 echo -e "$RED#                                  RUN: RPI-SENSORS                                  #$END"
 echo -e "$RED######################################################################################$END"
 
-set -x
+# set -x
 
 cd /home/git/projects/devops/apps/rpi-sensors
 
 docker-compose -H ssh://pi@rpi restart
-
-
-# docker-compose --context rpi restart
-
-# docker-compose --context rpi up -d
 
