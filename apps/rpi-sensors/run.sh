@@ -10,7 +10,10 @@ set -x
 
 cd /home/git/projects/devops/apps/rpi-sensors
 
-docker-compose --context rpi restart
+docker-compose -H ssh://pi@rpi restart
+
+
+# docker-compose --context rpi restart
 
 # docker-compose --context rpi up -d
 
