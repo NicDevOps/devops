@@ -39,7 +39,7 @@ while True:
     if humidity:
         h.set(humidity)
     
-#    i.set(illuminance)
+    i.set(illuminance)
 
     if temperature and humidity:
         print(f'temperature: {temperature}\nhumidity: {humidity}\nilluminance: {illuminance}')
