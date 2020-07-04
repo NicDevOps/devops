@@ -1,101 +1,88 @@
 #
 #
-"""
-    Draw the `board` table.
-
-    The board reflects the current state of the game, a number indicates an available location.
-
-    args:
-        board: 3x3 table (list of lists) containing the current state of the game
-
-    returns:
-        None
-
-    examples:
-        At the beginning of the game: board = [['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3']]
-        The printout should look like:
-
-         7 | 8 | 9
-        -----------
-         4 | 5 | 6
-        -----------
-         1 | 2 | 3
-
-         After a few marks: board = [['7', '8', 'X'], ['O', 'O', '6'], ['1', 'X', '3']]
-         The printout should look like:
-         7 | 8 | X
-        -----------
-         O | O | 6
-        -----------
-         1 | X | 3
-    """
-
 tic_tac_toe = [['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3']]
 
-# def draw(board):
-#     count = 0
-#     for y in board:
-#         print('{:s} | {:s} | {:s}'.format(y[0], y[1], y[2]))
-#         if count < 2:
-#             print('-' * 10)
-#             count += 1
-#
-#
-# draw(tic_tac_toe)
-
-"""
-   Check the availability of a `location` on the current `board`
-
-   An available location on the board contains a number between 1 and 9 stored as a string.
-   If the location contains 'X' or 'O', the location is not available and the function should return False;
-   otherwise, the function should return True indicating the location is available
-
-   args:
-       location: a number between 1 and 9 stored as a string
-       board: 3x3 table (list of lists) containing the current state of the game
-
-   returns:
-       True if the location is available. False if the location is not available
-
-   examples:
-       At the beginning of the game: board = [['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3']]
-       The printout should look like:
-
-        7 | 8 | 9 
-       -----------
-        4 | 5 | 6 
-       -----------
-        1 | 2 | 3 
-
-        available("1", board) --> returns True
-        available("9", board) --> returns True
-
-
-        After a few marks: board = [['7', '8', 'X'], ['O', 'O', '6'], ['1', 'X', '3']]
-        The printout should look like:
-        7 | 8 | X 
-       -----------
-        O | O | 6 
-       -----------
-        1 | X | 3 
-
-        available("1", board) --> returns True, because there is a number
-        available("5", board) --> returns False, because there is 'O'
-        available("9", board) --> returns False, because there is 'X'
-   """
-
-loc = '1'
-
+def draw(board):
+    count = 0
+    for y in board:
+        print('{:s} | {:s} | {:s}'.format(y[0], y[1], y[2]))
+        if count < 2:
+            print('-' * 10)
+            count += 1
 
 def available(location, board):
+
+    count = 0
+
     for y in board:
-        for x in range(2):
-            if y[x] == 'X' or y[x] =='O':
+        for x in y:
+            if x == location:
+                count += 1
+
+    if count >= 1:
+        return True
+    else:
+        return False
 
 
+def mark_1(player, location, board):
+    for y in board:
+        for x in range(len(y)):
+            if y[x] == location:
+                y[x] = player
+                
+
+mark_1('O', '7', tic_tac_toe)
+mark_1('O', '5', tic_tac_toe)
+mark_1('O', '3', tic_tac_toe)
+
+draw(tic_tac_toe)
 
 
-
-
-
-print(available(loc, tic_tac_toe))
+def check_win(board):
+    count_vx = 0
+    count_vo = 0
+    count_d = 0
+    count_dx = 0
+    count_do = 0
+    count_ad = 2
+    count_adx = 0
+    count_ado = 0
+    for y in board:
+        if y[0] == 'X' and y[1] == 'X' and y[2] == 'X':
+            return True
+        if y[0] == 'O' and y[1] == 'O' and y[2] == 'O':
+            return True
+    for x in range(len(board[0])):
+        if count_vx >= 3:
+            return True
+        if count_vo >= 3:
+            return True
+        for y in board:
+            if y[x] == 'X':
+                count_vx += 1
+            if y[x] == 'O':
+                count_vo += 1        
+    for y in board:
+        if y[count_d] == 'X':
+            count_dx += 1
+        if y[count_d] == 'O':
+            count_do += 1
+        count_d += 1
+    if count_dx == 3:
+        return True
+    if count_do == 3:
+        return True
+    for y in board:
+        if y[count_ad] == 'X':
+            count_adx += 1
+        if y[count_ad] == 'O':
+            count_ado += 1
+        count_ad -= 1
+    if count_adx == 3:
+        return True
+    if count_ado == 3:
+        return True         
+                
+        
+print(check_win(tic_tac_toe))
