@@ -74,7 +74,7 @@ class MainHandler(tornado.web.RequestHandler):
 		</div> 
 		<script src="/js/virtualjoystick.js"></script>
 		<script>
-			var ws = new WebSocket("ws://172.27.192.240:8080/websocket");
+			var ws = new WebSocket("ws://192.168.0.167:8080/websocket");
 			ws.onopen = function() {
 			ws.send("Hello, world");
 			};
@@ -107,7 +107,7 @@ class MainHandler(tornado.web.RequestHandler):
 					+ (joystick.down()	? ' down' 	: '')	
 				
 				ws.send(joystick.deltaX() + " " + joystick.deltaY());
-			}, 1/30 * 1000);
+			}, 100);
 		</script>
 	</body>
 </html>       
