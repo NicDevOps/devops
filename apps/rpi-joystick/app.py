@@ -1,11 +1,24 @@
 import tornado.ioloop
 import tornado.web
 import os
+import tornado.websocket
+
+class EchoWebSocket(tornado.websocket.WebSocketHandler):
+	def open(self):
+		print("WebSocket opened")
+
+	def on_message(self, message):
+		print("client: " + message)
+		# self.write_message(u"You said: " + message)
+
+	def on_close(self):
+		print("WebSocket closed")
+
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.write("""
- <html>
+<html>
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -61,6 +74,15 @@ class MainHandler(tornado.web.RequestHandler):
 		</div> 
 		<script src="/js/virtualjoystick.js"></script>
 		<script>
+			var ws = new WebSocket("ws://172.27.192.240:8080/websocket");
+			ws.onopen = function() {
+			ws.send("Hello, world");
+			};
+			ws.onmessage = function (evt) {
+			alert(evt.data);
+			};
+
+
 			console.log("touchscreen is", VirtualJoystick.touchScreenAvailable() ? "available" : "not available");
 	
 			var joystick	= new VirtualJoystick({
@@ -83,22 +105,19 @@ class MainHandler(tornado.web.RequestHandler):
 					+ (joystick.up()	? ' up'		: '')
 					+ (joystick.left()	? ' left'	: '')
 					+ (joystick.down()	? ' down' 	: '')	
+				
+				ws.send(joystick.deltaX() + " " + joystick.deltaY());
 			}, 1/30 * 1000);
 		</script>
 	</body>
 </html>       
-        
         """)
 
 def make_app():
-    # settings = {
-    #     "debug": True,
-    #     "static_path": os.path.join(os.path.dirname(__file__), "web")
-    # }
-
     return tornado.web.Application([
         (r"/", MainHandler),
         (r'/js/(.*)', tornado.web.StaticFileHandler, {'path': './static/js'}),
+		(r'/websocket', EchoWebSocket)
     ])
 
 if __name__ == "__main__":
