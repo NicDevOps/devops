@@ -3,12 +3,51 @@ import tornado.web
 import os
 import tornado.websocket
 
+import brickpi3
+
+BP = brickpi3.BrickPi3()
+
+class Robot(object):
+	def __init__(self, name):
+		self.name = name
+	
+	def foward(self):
+		BP.set_motor_power(BP.PORT_B + BP.PORT_C, 50)
+
+	def back(self):
+		BP.set_motor_power(BP.PORT_B + BP.PORT_C, -50)
+
+	def left(self):
+		BP.set_motor_power(BP.PORT_B, -50)
+		BP.set_motor_power(BP.PORT_C, 50)
+
+	def right(self):
+		BP.set_motor_power(BP.PORT_B, 50)
+		BP.set_motor_power(BP.PORT_C, -50)
+	
+	def stop(self):
+		BP.set_motor_power(BP.PORT_B + BP.PORT_C, 0)
+
+
+class Joystick(object):
+	def __init__(self):
+		pass
+
+def parse_message(message):
+	return message.split()
+
+r = Robot(name='prototype 1')
+
 class EchoWebSocket(tornado.websocket.WebSocketHandler):
 	def open(self):
 		print("WebSocket opened")
 
 	def on_message(self, message):
-		print("client: " + message)
+		x, y = parse_message(message)
+
+		print(f"x: {x}, y: {y}", x, y)
+
+		# print("client: " + message)
 		# self.write_message(u"You said: " + message)
 
 	def on_close(self):
