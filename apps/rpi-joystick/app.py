@@ -2,6 +2,7 @@ import tornado.ioloop
 import tornado.web
 import os
 import tornado.websocket
+import math
 
 import brickpi3
 
@@ -27,6 +28,19 @@ class Robot(object):
 	
 	def stop(self):
 		BP.set_motor_power(BP.PORT_B + BP.PORT_C, 0)
+	
+	def process_input(self, x, y):
+		if math.fabs(x) > 100:
+			if x > 0:
+				print('x: RIGHT')
+				self.right()
+			if x < 0:
+				print('x: LEFT')
+				self.left()
+		else:
+			print('x: NEUTRAL')
+			self.stop()
+
 
 
 class Joystick(object):
@@ -34,7 +48,12 @@ class Joystick(object):
 		pass
 
 def parse_message(message):
-	return message.split()
+	x_str, y_str = message.split()
+
+	x = int(x_str)
+	y = int(y_str)
+
+	return x, y
 
 r = Robot(name='prototype 1')
 
@@ -43,9 +62,14 @@ class EchoWebSocket(tornado.websocket.WebSocketHandler):
 		print("WebSocket opened")
 
 	def on_message(self, message):
+
+		print(message)
+
 		x, y = parse_message(message)
 
 		print(f"x: {x}, y: {y}", x, y)
+
+		r.process_input(x, y)
 
 		# print("client: " + message)
 		# self.write_message(u"You said: " + message)
