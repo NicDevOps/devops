@@ -3,10 +3,16 @@ import tornado.web
 import os
 import tornado.websocket
 import math
-
+import time
+from datetime import datetime, timedelta
 import brickpi3
+from prometheus_client import start_http_server, Gauge
 
 BP = brickpi3.BrickPi3()
+
+b = Gauge('battery', 'voltage battery')
+
+
 
 class Robot(object):
         def __init__(self, name):
@@ -16,6 +22,7 @@ class Robot(object):
                 self.state_y = 'Y_NEUTRAL'
                 self.old_state_x = 'X_NEUTRAL'
                 self.old_state_y = 'Y_NEUTRAL'
+                self.print_task = datetime.now() + timedelta(seconds=3)
         
         def forward(self):
                 BP.set_motor_power(BP.PORT_B + BP.PORT_C, 50)
@@ -33,8 +40,18 @@ class Robot(object):
         
         def stop(self):
                 BP.set_motor_power(BP.PORT_B + BP.PORT_C, 0)
+
+        def update(self):
+            current_time = datetime.now()
+
+            if current_time > self.print_task:
+                print("Battery voltage: %6.3f  9v voltage: %6.3f  5v voltage: %6.3f  3.3v voltage: %6.3f" % (BP.get_voltage_battery(), BP.get_voltage_9v(), BP.get_voltage_5v(), BP.get_voltage_3v3()))
+                self.print_task = current_time + timedelta(seconds=3)
+                b.set(BP.get_voltage_battery())
         
         def process_input(self, x, y):
+
+
             if math.fabs(x) > self.input_sensitivity:
                 if x > 0.0:
                     self.state_x = 'X_RIGHT'
@@ -77,6 +94,11 @@ class Robot(object):
 
             if self.state_x == 'X_NEUTRAL' and self.state_y == 'Y_NEUTRAL':
                 self.stop()
+
+            self.update()
+
+
+
 
 
 
@@ -224,6 +246,7 @@ def make_app():
     ])
 
 if __name__ == "__main__":
+    start_http_server(5000)
     app = make_app()
     app.listen(8080)
     tornado.ioloop.IOLoop.current().start()
