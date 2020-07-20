@@ -14,14 +14,14 @@ timeOut = MAX_DISTANCE * 60
 
 def pulseIn(pin,level,timeOut):
     t0 = time.time()
-    while(GPIO.input(pin) != level):
-        if((time.time() - t0) > timeOut*0.000001):
+    while GPIO.input(pin) != level:
+        if time.time() - t0 > timeOut * 0.000001:
             return 0
             t0 = time.time()
-    while(GPIO.input(pin) == level):
-        if((time.time() - t0) > timeOut*0.000001):
+    while GPIO.input(pin) == level:
+        if time.time() - t0 > timeOut * 0.000001:
             return 0
-            pulseTime = (time.time() - t0)*1000000
+            pulseTime = time.time() - t0 * 1000000
             return pulseTime
 
 
