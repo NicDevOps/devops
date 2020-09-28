@@ -22,23 +22,12 @@ import argparse
 from math import fabs
 from datetime import date, timedelta, datetime
 
-parser = argparse.ArgumentParser()
 
-parser.add_argument('month', type = int, help = 'Month as a number (1, 12)')
 
-parser.add_argument('date', type = int, help = 'Day as a number (1, 31) depending on the month')
 
-parser.add_argument('year', type = int, help = 'Year as a 4 digits number (2020)')
 
-parser.add_argument('-s', '--total_seconds', action = 'store_true', help = 'Show the time difference in total number of seconds')
 
-args = parser.parse_args()
 
-present = date.today()
-
-d_object = date(day = args.date, month = args.month, year = args.year)
-
-future_date = d_object - present
 
 def t_seconds(future_date):
     return int(fabs(future_date.total_seconds()))
@@ -48,6 +37,7 @@ def past_future(future_date):
         print('There are {:d} seconds remaining from today'.format(t_seconds(future_date)))
     else:
         print('There are {:d} seconds past from today'.format(t_seconds(future_date)))
+
         
 def main():
     if present > d_object:
@@ -58,5 +48,23 @@ def main():
     if args.total_seconds:
         past_future(future_date)
 
+
 if __name__ == '__main__':
+    
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('month', type = int, help = 'Month as a number (1, 12)')
+
+    parser.add_argument('date', type = int, help = 'Day as a number (1, 31) depending on the month')
+
+    parser.add_argument('year', type = int, help = 'Year as a 4 digits number (2020)')
+
+    parser.add_argument('-s', '--total_seconds', action = 'store_true', help = 'Show the time difference in total number of seconds')
+
+    args = parser.parse_args()
+
+    present = date.today()
+    d_object = date(day = args.date, month = args.month, year = args.year)
+    future_date = d_object - present
+    
     main()
