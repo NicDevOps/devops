@@ -4,26 +4,27 @@
 import argparse
 
 
-# usage: cipher.py [-h] [-o outfile_path] [-k KEY] [-d] [-a] [-v] infile
-
-# positional arguments:
-#   infile                input file to be encrypted or decrypted
-
-# optional arguments:
-#   -h, --help            show this help message and exit
-#   -o outfile_path, --outfile outfile_path
-#                         output file
-#   -k KEY, --key KEY     encryption/decryption key (must be positive) (default
-#                         = 1)
-#   -d, --decrypt         decrypt the input file
-#   -a, --all             decrypt using all keys [1, 25], save outputs in
-#                         different files. (useful in case the key is lost or
-#                         unknown)
-#   -v, --verbose         verbose mode
-
 
 def parse_command_line():
     
+    """
+    usage: cipher.py [-h] [-o outfile_path] [-k KEY] [-d] [-a] [-v] infile
+
+     positional arguments:
+       infile                input file to be encrypted or decrypted
+
+     optional arguments:
+       -h, --help            show this help message and exit
+       -o outfile_path, --outfile outfile_path
+                             output file
+       -k KEY, --key KEY     encryption/decryption key (must be positive) (default
+                             = 1)
+       -d, --decrypt         decrypt the input file
+       -a, --all             decrypt using all keys [1, 25], save outputs in
+                             different files. (useful in case the key is lost or
+                             unknown)
+       -v, --verbose         verbose mode
+    """
     parser = argparse.ArgumentParser()
     
     # positional arguments
@@ -43,16 +44,47 @@ def parse_command_line():
     # Parse command-line arguments
     args = parser.parse_args()
     
-    if args.all and args.verbose:
-        return 'verbose mode', 'all keys', args.infile, args.outfile
+    if args.decrypt and args.verbose:
+       
+       if args.all and args.infile != None and args.outfile != None:
+            return args.infile, args.outfile,'decrypt true', 'all keys', 'verbose mode True'
     
-    elif args.verbose and args.key:
-        return 'verbose mode', args.infile, args.outfile, args.key
+       elif args.key != None and args.infile != None and args.outfile != None:
+            return args.infile, args.outfile,'decrypt true', args.key, 'verbose mode True'
+
+    elif args.decrypt:
+        
+        if args.all and args.infile != None and args.outfile != None:
+            return args.infile, args.outfile,'decrypt True', 'all keys', 'verbose mode False'
+    
+        elif args.key != None and args.infile != None and args.outfile != None:
+            return args.infile, args.outfile,'decrypt True', args.key, 'verbose mode False'
+
+    elif args.verbose:
+        
+        if args.all and args.infile != None and args.outfile != None:
+            return args.infile, args.outfile,'decrypt False', 'all keys', 'verbose mode True'
+    
+        elif args.key != None and args.infile != None and args.outfile != None:
+            return args.infile, args.outfile,'decrypt False', args.key, 'verbose mode True'
   
-    elif args.all:
-        return 'all keys', args.infile, args.outfile
+
+    elif args.all and args.infile != None and args.outfile != None:
+        return args.infile, args.outfile,'decrypt False', 'all keys', 'verbose mode False'
+    
+    elif args.key != None and args.infile != None and args.outfile != None:
+        return args.infile, args.outfile,'decrypt False', args.key, 'verbose mode False'
+    
     else:
-        return args.infile, args.outfile, args.key
+        return 'invalid arguments, -h for usage'
+
+
+
+    
+        
+        
+        
+       
 
     
 
