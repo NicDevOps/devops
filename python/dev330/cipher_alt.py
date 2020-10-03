@@ -44,7 +44,39 @@ def parse_command_line():
     # Parse command-line arguments
     args = parser.parse_args()
     
-    return args.infile, args.outfile, args.key, args.decrypt, args.all, args.key, args.verbose
+    if args.decrypt and args.verbose:
+       
+       if args.all and args.infile != None and args.outfile != None:
+            return args.infile, args.outfile,'decrypt true', 'all keys', 'verbose mode True'
+    
+       elif args.key != None and args.infile != None and args.outfile != None:
+            return args.infile, args.outfile,'decrypt true', args.key, 'verbose mode True'
+
+    elif args.decrypt:
+        
+        if args.all and args.infile != None and args.outfile != None:
+            return args.infile, args.outfile,'decrypt True', 'all keys', 'verbose mode False'
+    
+        elif args.key != None and args.infile != None and args.outfile != None:
+            return args.infile, args.outfile,'decrypt True', args.key, 'verbose mode False'
+
+    elif args.verbose:
+        
+        if args.all and args.infile != None and args.outfile != None:
+            return args.infile, args.outfile,'decrypt False', 'all keys', 'verbose mode True'
+    
+        elif args.key != None and args.infile != None and args.outfile != None:
+            return args.infile, args.outfile,'decrypt False', args.key, 'verbose mode True'
+  
+
+    elif args.all and args.infile != None and args.outfile != None:
+        return args.infile, args.outfile,'decrypt False', 'all keys', 'verbose mode False'
+    
+    elif args.key != None and args.infile != None and args.outfile != None:
+        return args.infile, args.outfile,'decrypt False', args.key, 'verbose mode False'
+    
+    else:
+        return 'invalid arguments, -h for usage'
 
 
 
@@ -59,6 +91,3 @@ def parse_command_line():
 aws = parse_command_line()
 
 print(aws)
-
-    
-    
