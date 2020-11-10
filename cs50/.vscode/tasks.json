@@ -1,15 +1,14 @@
 {
     "tasks": [
         {
-            "type": "cppbuild",
+            "type": "shell",
             "label": "C/C++: gcc build active file",
             "command": "/usr/bin/gcc",
             "args": [
                 "-g",
-                "${file}",
-                "${workspaceFolder}/cs50.c",
+                "${workspaceFolder}/agreed.c", "${workspaceFolder}/cs50.c",
                 "-o",
-                "${fileDirname}/bin/${fileBasenameNoExtension}"
+                "${workspaceFolder}/bin/agreed"
             ],
             "options": {
                 "cwd": "/usr/bin"
