@@ -6,9 +6,9 @@
             "command": "/usr/bin/gcc",
             "args": [
                 "-g",
-                "${workspaceFolder}/agreed.c", "${workspaceFolder}/cs50.c",
+                "${workspaceFolder}/${fileBasename}", "${workspaceFolder}/cs50.c",
                 "-o",
-                "${workspaceFolder}/bin/agreed"
+                "${workspaceFolder}/bin/${fileBasenameNoExtension}"
             ],
             "options": {
                 "cwd": "/usr/bin"
