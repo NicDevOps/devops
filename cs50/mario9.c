@@ -1,4 +1,4 @@
-// Prints a pyramid of bricks with a loop
+// Problem set 1 : Prints a left sided pyramid of bricks with a loop
 
 #include <cs50.h>
 #include <stdio.h>
