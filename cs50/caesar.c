@@ -3,16 +3,26 @@
 #include <math.h>
 #include <cs50.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 int encrypt(string plain, string cipher, int key);
 
-int main(int argc, int argv[])
+int main(int argc, char *argv[])
 {
     string p = get_string("Enter a secret: ");
     string c = "abcdefghijklmnopqrstuvwxyz";
     if (argc == 2)
     {
-       encrypt(p, c, argv[1]);
+        int k = atoi(argv[1]);
+    
+        if (isdigit(k))
+        {
+            printf("Must be a positive integer");
+        }
+        else
+        {
+            encrypt(p, c, k);
+        }
     }
     else
     {
@@ -31,6 +41,10 @@ int encrypt(string plain, string cipher, int key)
         else if (isspace(plain[j]))
         {
             printf("%c", plain[j]); 
+        }
+        else if (isdigit(plain[j]))
+        {
+            printf("%c", plain[j]);
         } 
         for (int i = 0, n = strlen(cipher); i < n; i++)
         {
