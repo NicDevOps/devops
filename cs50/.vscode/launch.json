@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/${fileBasenameNoExtension}",
-            "args": [],
+            "args": ["bob", "dude", "nic"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

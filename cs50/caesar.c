@@ -11,17 +11,17 @@ int main(int argc, char *argv[])
 {
     string p = get_string("Enter a secret: ");
     string c = "abcdefghijklmnopqrstuvwxyz";
+
     if (argc == 2)
     {
-        int k = atoi(argv[1]);
-    
-        if (isdigit(k))
+        if (isdigit(argv[1][0]))
         {
-            printf("Must be a positive integer");
+            int k = atoi(argv[1]);
+            encrypt(p, c, k);
         }
         else
         {
-            encrypt(p, c, k);
+            printf("Must be a positive integer");
         }
     }
     else
