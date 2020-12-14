@@ -64,16 +64,70 @@ int main(int argc, string argv[])
 }
 
 // Update vote totals given a new vote
-bool vote(string name)
+bool vote(string s)
 {
-    
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (strcmp(candidates[i].name, s) == 0)
+        {
+            printf("Found\n");
+            candidates[i].votes++;
+            return true;
+        }
+    }
     return false;
 }
 
 // Print the winner (or winners) of the election
 void print_winner(void)
 {
-    // TODO
-    return;
+    int size = candidate_count;
+    for (int step = 0; step < size - 1; ++step) 
+    {
+        for (int i = 0; i < size - step - 1; ++i) 
+        {
+        // To sort in descending order, change">" to "<".
+            if (candidates[i].votes < candidates[i + 1].votes) 
+            {  
+            // swap if greater is at the front position
+            string temp_1 = candidates[i].name;
+            int temp_2 = candidates[i].votes;
+
+            candidates[i].name = candidates[i + 1].name;
+            candidates[i].votes = candidates[i + 1].votes;
+
+            candidates[i + 1].name = temp_1;
+            candidates[i + 1].votes = temp_2;
+            }
+        }
+    }
+    for (int i = 0; i < size; ++i) 
+    {
+        printf("%s  ", candidates[i].name);
+    }
+    printf("\n");
+    for (int i = 0; i < size; ++i) 
+    {
+        printf("%i  ", candidates[i].votes);
+    }
+    printf("\n");
+    if (candidates[0].votes = candidates[size - 1].votes)
+    {
+        for (int i = 0; i < size; ++i)
+        {
+            printf("%s a winner\n", candidates[i].name);
+        }
+    }
+    else
+    {
+        for (int i = 0; i < size; ++i)
+        { 
+            if (candidates[i].votes = candidates[i + 1].votes)
+            {
+                printf("%s is a winner!\n", candidates[i].name);
+            }
+        }
+    }   
 }
+
 
