@@ -111,23 +111,25 @@ void print_winner(void)
         printf("%i  ", candidates[i].votes);
     }
     printf("\n");
-    if (candidates[0].votes = candidates[size - 1].votes)
+    if (candidates[0].votes > candidates[1].votes)
     {
-        for (int i = 0; i < size; ++i)
-        {
-            printf("%s a winner\n", candidates[i].name);
-        }
+        printf("%s is the winner!(%i)\n", candidates[0].name, candidates[0].votes);
     }
     else
     {
         for (int i = 0; i < size; ++i)
         { 
-            if (candidates[i].votes = candidates[i + 1].votes)
+            if (candidates[i].votes == candidates[i + 1].votes)
             {
-                printf("%s is a winner!\n", candidates[i].name);
+                printf("%s is a winner!(%i)\n", candidates[i].name, candidates[i].votes);
+            }
+            else if (candidates[i].votes == candidates[i - 1].votes)
+            {
+                printf("%s is a winner!(%i)\n", candidates[i].name, candidates[i].votes);
+                i = size;
             }
         }
-    }   
+    } 
 }
 
 
