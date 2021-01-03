@@ -28,11 +28,13 @@ int candidate_count;
 
 // Function prototypes
 bool vote(int rank, string name, int ranks[]);
+bool check_cycle();
 void record_preferences(int ranks[]);
 void add_pairs(void);
 void sort_pairs(void);
 void lock_pairs(void);
 void print_winner(void);
+
 
 int main(int argc, string argv[])
 {
@@ -151,7 +153,6 @@ bool vote(int rank, string name, int ranks[])
     {
         if (strcmp(candidates[i], name) == 0)
         {
-            printf("Found\n");
             ranks[i] = rank;
             return true;
         }
@@ -165,7 +166,6 @@ void record_preferences(int ranks[])
 {
     for (int i = 0; i < candidate_count; i++)
     {
-        printf("%i\n", ranks[i]);
         for (int j = 0; j < candidate_count; j++)
         {
             if (i != j)
@@ -242,14 +242,88 @@ void sort_pairs(void)
 
 // Lock pairs into the candidate graph in order, without creating cycles
 void lock_pairs(void)
+{   
+    for (int p = 0; p < pair_count; p++)
+    {
+        for (int i = 0; i < candidate_count; i++)
+        {
+            for (int j = 0; j < candidate_count; j++)
+            {
+                if (i != j)
+                {
+                    if (preferences[i][j] == pairs[p].winner && preferences[j][i] == pairs[p].loser)
+                    {
+                        locked[i][j] = true;
+                        if (check_cycle() == true)
+                        {
+                            locked[i][j] = false;
+                            continue;
+                        }
+                        printf("Pair (%s over %s) is locked\n", candidates[i], candidates[j]);
+                    }
+                }
+            }
+        }  
+    }
+}
+
+bool check_cycle()
 {
-    // TODO
-    return;
+    int h = 0;
+    for (int i = 0; i < candidate_count; i++)
+    {
+        for (int j = 0; j < candidate_count; j++)
+        {
+            if (i != j)
+            {
+                if (locked[i][j] == true)
+                {
+                    h++;
+                }
+            }
+        }
+    }
+
+    if (h == candidate_count)
+    {
+        return true;
+    }
+    else
+    {
+        return false; 
+    }
 }
 
 // Print the winner of the election
 void print_winner(void)
 {
-    // TODO
-    return;
+    int loser[candidate_count];
+
+    for (int i = 0; i < candidate_count; i++)
+    {
+        loser[i] = 0;
+    }
+
+    for (int i = 0; i < candidate_count; i++)
+    {
+        for (int j = 0; j < candidate_count; j++)
+        {
+            if (i != j)
+            {
+                if (locked[i][j] == true)
+                {
+                    printf("%s over %s\n", candidates[i], candidates[j]);
+                    loser[j]++;
+                }
+            }
+        }
+    }
+    
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (loser[i] == 0)
+        {
+            printf("The winner of this election is: %s\n", candidates[i]);
+        }
+    }
 }
