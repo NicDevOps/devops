@@ -34,6 +34,7 @@ void add_pairs(void);
 void sort_pairs(void);
 void lock_pairs(void);
 void print_winner(void);
+int mag(pair p);
 
 
 int main(int argc, string argv[])
@@ -216,18 +217,14 @@ void sort_pairs(void)
     {
         for (int i = 0; i < pair_count - step - 1; ++i) 
         {
-            int h = pairs[i].winner - pairs[i].loser;
-            int k = pairs[i + 1].winner - pairs[i + 1].loser;
-            // To sort in descending order, change">" to "<".
+            int h = mag(pairs[i]);
+            int k = mag(pairs[i + 1]);
+            
             if (h < k) 
             {  
-                // swap if greater is at the rear position
-                int temp1 = pairs[i].winner;
-                int temp2 = pairs[i].loser;
-                pairs[i].winner = pairs[i + 1].winner;
-                pairs[i].loser = pairs[i + 1].loser;
-                pairs[i + 1].winner = temp1;
-                pairs[i + 1].loser = temp2;
+                pair temp = pairs[i];
+                pairs[i] = pairs[i + 1];
+                pairs[i + 1] = temp;
             }
         }
     }
@@ -238,6 +235,11 @@ void sort_pairs(void)
         printf("winner: %i\n", pairs[i].winner);
         printf("loser: %i\n", pairs[i].loser);
     }
+}
+
+int mag(pair p)
+{
+    return p.winner - p.loser;
 }
 
 // Lock pairs into the candidate graph in order, without creating cycles
