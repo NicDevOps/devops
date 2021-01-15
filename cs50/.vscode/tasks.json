@@ -6,7 +6,7 @@
             "command": "/usr/bin/gcc",
             "args": [
                 "-g",
-                "${workspaceFolder}/${fileBasename}", "${workspaceFolder}/cs50.c",
+                "${workspaceFolder}/${fileBasename}", "${workspaceFolder}/cs50.c","${workspaceFolder}/helpers.c",
                 "-o",
                 "${workspaceFolder}/bin/${fileBasenameNoExtension}",
                 "-lm"
