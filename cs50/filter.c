@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
 
     // Define allowable filters
-    char *filters = "bgrs";
+    char *filters = "bghrs";
 
     // Get filter flag and check validity
     char filter = getopt(argc, argv, filters);
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
 
     // Filter image
     // switch (filter)
-    switch ('e')
+    switch ('g')
     {
         // Blur
         case 'b':
@@ -115,6 +115,12 @@ int main(int argc, char *argv[])
         // Grayscale
         case 'g':
             grayscale(height, width, image);
+            break;
+        
+        // Heatmap
+        case 'h':
+            grayscale(height, width, image);
+            heatmap(height, width, image);
             break;
 
         // Reflection

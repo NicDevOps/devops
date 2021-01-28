@@ -10,7 +10,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/${fileBasenameNoExtension}",
-            "args": ["-g", "stadium.bmp", "out.bmp"],
+            "args": ["card.raw",],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

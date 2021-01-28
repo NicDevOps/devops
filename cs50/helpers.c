@@ -1,5 +1,6 @@
 #include "helpers.h"
 #include <math.h>
+#include <stdlib.h>
 
 // Convert image to grayscale
 void grayscale(int height, int width, RGBTRIPLE image[height][width])
@@ -101,113 +102,113 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
 
             image[i][j].rgbtBlue = avg_blue;
             image[i][j].rgbtGreen = avg_green;
-            image[i][j].rgbtRed = avg_red;
+            // image[i][j].rgbtRed = avg_red;
         }
     }
 }
 
-// Detect edges
+
 void edges(int height, int width, RGBTRIPLE image[height][width])
 {
+   
+    int gx[3][3] = {{-1, 0, 1},
+                    {-2, 0, 2},
+                    {-1, 0, 1}};
+
+    int gy[3][3] = {{-1, -2, -1},
+                    {0, 0, 0},
+                    {1, 2, 1}};
+
+    RGBTRIPLE(*buffer)[width] = calloc(height, width * sizeof(RGBTRIPLE));
+
+
     for (int i = 1; i < height - 1; i++)
     {
         for (int j = 1; j < width - 1; j++)
         {
-            int xb1 = image[i - 1][j - 1].rgbtBlue * -1;
-            int xb2 = image[i - 1][j + 0].rgbtBlue * 0;
-            int xb3 = image[i - 1][j + 1].rgbtBlue * 1;
-            int xb4 = image[i + 0][j - 1].rgbtBlue * -2;
-            int xb5 = image[i + 0][j + 1].rgbtBlue * 2;
-            int xb6 = image[i + 1][j - 1].rgbtBlue * -1;
-            int xb7 = image[i + 1][j + 0].rgbtBlue * 0;
-            int xb8 = image[i + 1][j + 1].rgbtBlue * 1;
+            // buffer[i][j].rgbtRed = 255;
+            // buffer[i][j].rgbtGreen = 0;
+            // buffer[i][j].rgbtBlue = 0;
+            int sum_red_gx = 0;
+            int sum_green_gx = 0;
+            int sum_blue_gx = 0;
+            int sum_red_gy = 0;
+            int sum_green_gy = 0;
+            int sum_blue_gy = 0;
 
-            int xg1 = image[i - 1][j - 1].rgbtGreen * -1;
-            int xg2 = image[i - 1][j + 0].rgbtGreen * 0;
-            int xg3 = image[i - 1][j + 1].rgbtGreen * 1;
-            int xg4 = image[i + 0][j - 1].rgbtGreen * -2;
-            int xg5 = image[i + 0][j + 1].rgbtGreen * 2;
-            int xg6 = image[i + 1][j - 1].rgbtGreen * -1;
-            int xg7 = image[i + 1][j + 0].rgbtGreen * 0;
-            int xg8 = image[i + 1][j + 1].rgbtGreen * 1;
-
-            int xr1 = image[i - 1][j - 1].rgbtRed * -1;
-            int xr2 = image[i - 1][j + 0].rgbtRed * 0;
-            int xr3 = image[i - 1][j + 1].rgbtRed * 1;
-            int xr4 = image[i + 0][j - 1].rgbtRed * -2;
-            int xr5 = image[i + 0][j + 1].rgbtRed * 2;
-            int xr6 = image[i + 1][j - 1].rgbtRed * -1;
-            int xr7 = image[i + 1][j + 0].rgbtRed * 0;
-            int xr8 = image[i + 1][j + 1].rgbtRed * 1;
-
-            int yb1 = image[i - 1][j - 1].rgbtBlue * -1;
-            int yb2 = image[i - 1][j + 0].rgbtBlue * -2;
-            int yb3 = image[i - 1][j + 1].rgbtBlue * -1;
-            int yb4 = image[i + 0][j - 1].rgbtBlue * 0;
-            int yb5 = image[i + 0][j + 1].rgbtBlue * 0;
-            int yb6 = image[i + 1][j - 1].rgbtBlue * 1;
-            int yb7 = image[i + 1][j + 0].rgbtBlue * 2;
-            int yb8 = image[i + 1][j + 1].rgbtBlue * 1;
-
-            int yg1 = image[i - 1][j - 1].rgbtGreen * -1;
-            int yg2 = image[i - 1][j + 0].rgbtGreen * -2;
-            int yg3 = image[i - 1][j + 1].rgbtGreen * -1;
-            int yg4 = image[i + 0][j - 1].rgbtGreen * -0;
-            int yg5 = image[i + 0][j + 1].rgbtGreen * 0;
-            int yg6 = image[i + 1][j - 1].rgbtGreen * 1;
-            int yg7 = image[i + 1][j + 0].rgbtGreen * 2;
-            int yg8 = image[i + 1][j + 1].rgbtGreen * 1;
-
-            int yr1 = image[i - 1][j - 1].rgbtRed * -1;
-            int yr2 = image[i - 1][j + 0].rgbtRed * -2;
-            int yr3 = image[i - 1][j + 1].rgbtRed * -1;
-            int yr4 = image[i + 0][j - 1].rgbtRed * 0;
-            int yr5 = image[i + 0][j + 1].rgbtRed * 0;
-            int yr6 = image[i + 1][j - 1].rgbtRed * 1;
-            int yr7 = image[i + 1][j + 0].rgbtRed * 2;
-            int yr8 = image[i + 1][j + 1].rgbtRed * 1;
-
-            double Gx_blue = pow((xb1 + xb2 + xb3 + xb4 + xb5 + xb6 + xb7 + xb8), 2);
-            double Gx_green = pow((xg1 + xg2 + xg3 + xg4 + xg5 + xg6 + xg7 + xg8), 2);
-            double Gx_red = pow((xr1 + xr2 + xr3 + xr4 + xr5 + xr6 + xr7 + xr8), 2);
-
-            double Gy_blue = pow((yb1 + yb2 + yb3 + yb4 + yb5 + yb6 + yb7 + yb8), 2);
-            double Gy_green = pow((yg1 + yg2 + yg3 + yg4 + yg5 + yg6 + yg7 + yg8), 2);
-            double Gy_red = pow((yr1 + yr2 + yr3 + yr4 + yr5 + yr6 + yr7 + yr8), 2);
-
-            float blue = round(sqrt(Gx_blue + Gy_blue));
-            float green = round(sqrt(Gx_green + Gy_green));
-            float red = round(sqrt(Gx_red + Gy_red));
-
-            blue = (int)blue;
-            green = (int)green;
-            red = (int)red;
-
-            if (red > 255)
+            for (int x = 0; x < 3; x++)
             {
-                image[i][j].rgbtRed = 255;
-            }
-            else
-            {
-                image[i][j].rgbtRed = red;
-            }
-            if (green > 255)
-            {
-                image[i][j].rgbtGreen = 255;
-            }
-            else
-            {
-                image[i][j].rgbtGreen = green;
+                for (int y = 0; y < 3; y++)
+                {
+                    int nx = x - 1 + i;
+                    int ny = y - 1 + j;
+                    sum_red_gx = sum_red_gx + image[nx][ny].rgbtRed * gx[x][y];
+                    sum_green_gx = sum_green_gx + image[nx][ny].rgbtGreen * gx[x][y];
+                    sum_blue_gx = sum_blue_gx + image[nx][ny].rgbtBlue * gx[x][y];
+                    sum_red_gy = sum_red_gy + image[nx][ny].rgbtRed * gy[x][y];
+                    sum_green_gy = sum_green_gy + image[nx][ny].rgbtGreen * gy[x][y];
+                    sum_blue_gy = sum_blue_gy + image[nx][ny].rgbtBlue * gy[x][y];
+                }
             }
 
-            if (blue > 255)
+            int delta_red = (int)round(sqrt(sum_red_gx * sum_red_gx + sum_red_gy * sum_red_gy));
+            int delta_green = (int)round(sqrt(sum_green_gx * sum_green_gx + sum_green_gy * sum_green_gy));
+            int delta_blue = (int)round(sqrt(sum_blue_gx * sum_blue_gx + sum_blue_gy * sum_blue_gy));
+
+            if (delta_red > 255)
             {
-                image[i][j].rgbtBlue = 255;
+                delta_red = 255;
             }
-            else
+            if (delta_green > 255)
             {
-                image[i][j].rgbtBlue = blue;
+                delta_green = 255;
             }
+            if (delta_blue > 255)
+            {
+                delta_blue = 255;
+            }
+            buffer[i][j].rgbtRed = delta_red;
+            buffer[i][j].rgbtGreen = delta_green;
+            buffer[i][j].rgbtBlue = delta_blue;
         }
     }
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            image[i][j].rgbtRed = buffer[i][j].rgbtRed;
+            image[i][j].rgbtGreen = buffer[i][j].rgbtGreen;
+            image[i][j].rgbtBlue = buffer[i][j].rgbtBlue;
+        }
+    }
+    free(buffer);
+}
+
+
+void heatmap(int height, int width, RGBTRIPLE image[height][width])
+{
+    RGBTRIPLE *palette = malloc(255 * sizeof(RGBTRIPLE));
+
+    for (int i = 0; i < 256; i++)
+    {
+        int step = i % 4;
+        palette[i].rgbtRed = step * 4;
+        palette[i].rgbtGreen = 0;
+        palette[i].rgbtBlue = 0;    
+    }
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            int index = image[i][j].rgbtRed;
+            RGBTRIPLE color = palette[index];
+            image[i][j].rgbtRed = color.rgbtRed;
+            // image[i][j].rgbtGreen = color.rgbtGreen;
+            // image[i][j].rgbtBlue = color.rgbtBlue;
+        }
+    }
+
+    free(palette);
 }
