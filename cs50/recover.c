@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #define BLOCKSIZE 512
-#define NAME 10
+#define NAME 8
 
 // const int BLOCKSIZE = 512;
 // const int NAME = 8;
@@ -34,17 +35,54 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    sprintf(filename, "%03i.jpg\n", 0);
+    // FILE *img = NULL;
+    sprintf(filename, "%03i.jpg", 0);
     FILE *img = fopen(filename, "w");
-    if (img == NULL)
-    {
-        fclose(input);
-        return 1;
-    }
-
     BLOCK c;
     int n = 0;
-    
+
+    // printf("%li\n", sizeof(BLOCK));
+    // printf("%s\n", c.buffer);
+    // int bytes_read = fread(&c, sizeof(BLOCKSIZE), 1, input);
+
+    // printf("%i\n", bytes_read);
+    // printf("%s\n", c.buffer);
+    // bool header_found = false;
+
+    // while (bytes_read)
+    // {
+    //     if (c.buffer[0] == 0xff && c.buffer[1] == 0xd8 && c.buffer[2] == 0xff && (c.buffer[3] & 0xf0) == 0xe0)
+    //     {
+    //         if (header_found == false)
+    //         {
+    //             sprintf(filename, "%03i.jpg", n);
+    //             img = fopen(filename, "w");
+    //             printf("first_header %i\n", n);
+    //             fwrite(&c, sizeof(BLOCKSIZE), 1, img);
+    //             header_found = true;
+    //         }
+    //         else
+    //         {
+    //             fclose(img);
+    //             n++;
+    //             sprintf(filename, "%03i.jpg", n);
+    //             img = fopen(filename, "w");
+    //             printf("header %i\n", n);
+    //             fwrite(&c, sizeof(BLOCKSIZE), 1, img); 
+    //         }
+    //     }
+    //     else
+    //     {
+    //         // printf("chunk %i\n", n);
+    //         if (header_found == true)
+    //         {
+    //             fwrite(&c, sizeof(BLOCKSIZE), 1, img);
+    //         }
+           
+    //     }
+    //     // printf("%i\n", bytes_read);
+    //     bytes_read = fread(&c, sizeof(BLOCKSIZE), 1, input);
+    // }
     while (fread(&c, sizeof(BLOCKSIZE), 1, input))
     {
         if (c.buffer[0] == 0xff && c.buffer[1] == 0xd8 && c.buffer[2] == 0xff && (c.buffer[3] & 0xf0) == 0xe0)
@@ -57,8 +95,8 @@ int main(int argc, char *argv[])
             else
             {
                 fclose(img);
-                sprintf(filename, "%03i.jpg\n", n);
-                FILE *img = fopen(filename, "w");
+                sprintf(filename, "%03i.jpg", n);
+                img = fopen(filename, "w");
                 fwrite(&c, sizeof(BLOCKSIZE), 1, img);
                 n++;
             }
@@ -75,6 +113,7 @@ int main(int argc, char *argv[])
             }
         }
     }
-
+    
+    fclose(img);
     fclose(input);
 }
