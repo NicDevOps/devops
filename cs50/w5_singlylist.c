@@ -16,7 +16,7 @@ node *create(int val);
 void insert(node **list, int val);
 void delete(node *list, int val);
 void deleteMiddleNode(node *head, int position);
-void deleteFirstNode(node *head);
+void deleteFirstNode(node **head);
 void deleteLastNode(node *head);
 void sort(node *list);
 void print_list(node *list);
@@ -35,7 +35,7 @@ int main(void)
     {
         printf("found\n");
     }
-    // deleteFirstNode(numbers);
+    deleteFirstNode(&numbers);
     // deleteMiddleNode(numbers, 3);
     // delete(numbers, 2);
     // deleteLastNode(numbers);
@@ -184,18 +184,18 @@ void deleteLastNode(node *head)
     }
 }
 
-void deleteFirstNode(node *head)
+void deleteFirstNode(node **head)
 {
     node *toDelete;
 
-    if(head == NULL)
+    if(*head == NULL)
     {
         printf("List is already empty.");
     }
     else
     {
-        toDelete = head;
-        head = head->next;
+        toDelete = *head;
+        *head = (*head)->next;
 
         printf("\nData deleted = %d\n", toDelete->number);
 
