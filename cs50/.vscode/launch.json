@@ -10,7 +10,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/${fileBasenameNoExtension}",
-            "args": ["card.raw",],
+            "args": ["texts/lalaland.txt",],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
