@@ -3,8 +3,13 @@
 # Create an array with 100000 random numbers, 
 # and display them using a histogram with 100 bars:
 
+import matplotlib
+
+matplotlib.use('TKAgg')
+print(matplotlib.get_backend())
 
 import matplotlib.pyplot as plt
+
 import os
 from time import sleep
 import numpy

@@ -1,13 +1,21 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <cs50.h>
+#include <stdbool.h>
+#include <ctype.h>
+
+#include "utils.h"
+
+#define LENGTH 45
+
+// Default dictionary
+#define DICTIONARY "dictionaries/large"
 
 #define ALPHABET 26
 const int CASE = 'a';
 
-int MAXSIZE = 8;       
-char stack[8 + 1];     
+int MAXSIZE = LENGTH;       
+char stack[LENGTH + 1];     
 int top = -1;   
 
 typedef struct node
@@ -178,16 +186,50 @@ void PreOrderPrint(node* trieTree)
     }
 }
 
+void TrieTreeIndex(node* trieTree)
+{
+    char *dictionary = DICTIONARY;
+
+    FILE *file = fopen(dictionary, "r");
+    if (file != NULL)
+    {
+        char word[LENGTH];
+        // printf("%s\n", c);
+        while (fscanf(file, "%s", word) != EOF)
+        {
+            // printf("%s\n", word);
+            insertNode(trieTree, word);
+            // loaded++;
+        }
+        fclose(file);
+    }  
+}
+
+
 
 int main ()
 {
+    // Structures for timing data
+    struct rusage before, after;
+
+    // Benchmarks
+    double time_index = 0.0, time_print = 0.0;
+    
     node* root = malloc(sizeof(node));
 
-    insertNode(root, "dude");
-    insertNode(root, "mimi");
-    insertNode(root, "winston");
-    insertNode(root, "legros");
-    insertNode(root, "mimi");
-    // deleteNode(root, "mimi");
+    getrusage(RUSAGE_SELF, &before);
+    TrieTreeIndex(root);
+    getrusage(RUSAGE_SELF, &after);
+
+    time_index = calculate(&before, &after);
+
+    getrusage(RUSAGE_SELF, &before);
     PreOrderPrint(root);
+    getrusage(RUSAGE_SELF, &after);
+
+    time_print = calculate(&before, &after);
+
+    printf("TIME IN index:         %.2f\n", time_index);
+    printf("TIME IN print:         %.2f\n", time_print);
+
 }

@@ -2,7 +2,9 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <cs50.h>
+#include <stdbool.h>
+
+// #include <cs50.h>
 
 #define HASH_MAX 10
 
