@@ -5,8 +5,7 @@
 
 int main(void)
 {
-    string s = get_string("Before: ");
-    printf("After:  \n");
+    string s = get_string("Text: ");
 
     // string s = "Congratulations! Today is your day. You're off to Great Places! You're off and away!";
 
@@ -54,6 +53,10 @@ int main(void)
     if (grade >= 16)
     {
         printf("Grade 16+\n");
+    }
+    else if (grade < 1)
+    {
+        printf("Before Grade 1");
     }
     else
     {

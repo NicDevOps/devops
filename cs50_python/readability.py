@@ -17,12 +17,16 @@ for i in range(len(s)):
         if j == True:
             word += 1
             j = False
-    elif s[i] == "?" or "!" or ".":
-        sentence += 1
-        if j == False:
-            word += 1
-    else:
+    elif ord(s[i]) >= 34 and ord(s[i]) <= 45 or ord(s[i]) == 47 or ord(s[i]) >= 58 and ord(s[i]) <= 62 or ord(s[i]) == 64 or ord(s[i]) >= 91 and ord(s[i]) <= 96 or ord(s[i]) >= 123 and ord(s[i]) <= 255:
         continue
+    elif s[i] == "." or "!" or "?":
+        if j == False:
+            sentence -= 1
+        sentence += 1
+        if j == True:
+            word += 1
+            j = False
+
 
 L = (letter * 100) / word
 S = (sentence * 100) / word
@@ -35,6 +39,8 @@ print(grade)
 
 if grade >= 16:
     print("Grade 16+")
+elif grade < 1:
+    print("before Grade 1")
 else:
     print(f"Grade: {grade}")
 
