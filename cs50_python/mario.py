@@ -1,7 +1,8 @@
 # Problem set 1, hard part : Prints a right sided pyramid of bricks with a loop
 
-n = input("Size: ")
-   
+n = int(input("Size: "))
+print(n)
+
 for i in range(n):
     for j in range(n):
         print(" ", end="")
