@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script src="myscripts.js"></script>
+    <style>
+        p.dotted {border-style: dotted;}
+        p.dashed {border-style: dashed;}
+        p.solid {border-style: solid;}
+        p.double {border-style: double;}
+        p.groove {border-style: groove;}
+        p.ridge {border-style: ridge;}
+        p.inset {border-style: inset;}
+        p.outset {border-style: outset;}
+        p.none {border-style: none;}
+        p.hidden {border-style: hidden;}
+        p.mix {border-style: dotted dashed solid double;}
+    </style>
+</head>
+
+<body>
+
+  <p class="double">Before the script...</p>
+
+  <div id="content"></div>
+
+    <script>
+
+        function doubleAge(age)
+        {
+            return age * 2;
+        }
+
+        var result = doubleAge(33);
+
+        console.log("result: " + result);
+
+        var result2 = test("aaa", "bbb");
+
+        console.log("test: " + result2);
+        console.log("PLANCK: " + PLANCK);
+
+
+
+        var x = 99;
+        // alert( 'Hello, world!' );
+        console.log(x);
+        console.log("Hello world!");
+        console.log("Hello world!");
+        console.log("Hello world!");
+        console.log("Hello world!");
+
+        document.getElementById("content").innerHTML = "PLANCK: " + PLANCK;
+
+        var f = function()
+        {
+            // console.log("hello");
+
+            var currentTime = new Date().toLocaleTimeString();
+
+            document.getElementById("content").innerHTML = "time: " + currentTime;
+        }
+
+        var intervalId = window.setInterval(f, 1000);
+
+        console.log("intervalId: " + intervalId);
+
+    </script>
+
+  <p class="dotted">...After the script.</p>
+
+
+
+</body>
+
+</html>
