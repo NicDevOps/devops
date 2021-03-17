@@ -1,4 +1,5 @@
 import csv
+import sys
 from pprint import pprint
 
 def read_csv(csv_path):
@@ -22,26 +23,6 @@ def create(data_list, dict_person, list_str):
                 if j > 0:                   
                     dict_person[data_list[i][0]].append(int(data_list[i][j]))
 
-# def search_dna(dna, d):
-#     n = len(d)
-#     count = 0
-#     x = (len(dna)//n) * n
-#     print(x)
-#     for i in range(0, len(dna), n):
-#         # if i == len(dna) - n:
-#         #     break
-#         if dna[i:i + n] == d:
-#             count += 1
-#     return count   
-    
-# def match_dna(dna, d, l):
-#     count = 0
-#     for key, value in d.items():
-#         for str_count in value:
-#             if int(str_count) == search_dna(dna, l[value.index(str_count)]):
-#                 count += 1
-#         if count == len(l):
-#             return key
 
 def match_dna(dna, persons, list_str):
 
@@ -81,18 +62,20 @@ def search_dna(dna, d):
     return largest_sequences
     
 
-    # for i in range(len(dna)):
-    #     x = dna.index(d, i, len(dna))
-    #     if x == -1:
-    #         print("found")
-            
-
 def main():
-
-    text_path = '/home/nick/projects/devops/cs50_python/dna/sequences/6.txt'
+    
+    text_path = ''
+    # text_path = '/home/nick/projects/devops/cs50_python/dna/sequences/5.txt'
     # csv_path = '/home/nick/projects/devops/cs50_python/dna/databases/small.csv'
-    csv_path = '/home/nick/projects/devops/cs50_python/dna/databases/large.csv'
-
+    csv_path = ''
+    argc = len(sys.argv)
+    for i in range(argc):
+        if i == 1:
+            text_path = sys.argv[i]
+        if i == 2:
+            csv_path = sys.argv[i]
+        print("argv[{:d}] = {}".format(i, sys.argv[i]))
+    print(sys.argv)
     list_str = []
     dict_person = {}
 
@@ -100,7 +83,7 @@ def main():
 
     create(read_csv(csv_path), dict_person, list_str)
     # d = list_str[0]
-
+    
     # count_dna(dna, list_str)
     # print(dict_person)
     # print(list_str)
@@ -108,7 +91,7 @@ def main():
     # x = search_dna(dna, d)
     # print(x)
     print(match)
-    
+    print(argc)
 
 
 if __name__ == '__main__':
