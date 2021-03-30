@@ -79,9 +79,11 @@ def main():
     list_str = []
     dict_person = {}
 
-    dna = read_text(text_path)
+    dna = read_text(csv_path)
 
-    create(read_csv(csv_path), dict_person, list_str)
+    data_list = read_csv(text_path)
+
+    create(data_list, dict_person, list_str)
     # d = list_str[0]
     
     # count_dna(dna, list_str)
