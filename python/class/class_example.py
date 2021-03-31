@@ -1,7 +1,4 @@
 
-
-
-
 class Person():
     def __init__(self, name, age):
         print('creating person')
@@ -16,11 +13,6 @@ class Person():
 
 
 p = Person(name='bob', age=33)
-
-
-
-
-
 
 print('name:', p.get_name(), 'age:', p.get_age())
 

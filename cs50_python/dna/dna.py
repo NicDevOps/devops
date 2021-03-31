@@ -1,6 +1,5 @@
 import csv
 import sys
-from pprint import pprint
 
 def read_csv(csv_path):
     with open(csv_path, newline='') as f:
@@ -25,10 +24,8 @@ def create(data_list, dict_person, list_str):
 
 
 def match_dna(dna, persons, list_str):
-
-    print(persons)
-    print(list_str)
     result = []
+
     for s in list_str:
         sequence_count = search_dna(dna, s)
         result.append(sequence_count)
@@ -51,7 +48,6 @@ def search_dna(dna, d):
         previous_index = current_index
         current_index = dna.find(d, current_index + 1)
     
-    pprint(sequences)
     largest_sequences = 0
 
     for s in sequences:
@@ -65,35 +61,25 @@ def search_dna(dna, d):
 def main():
     
     text_path = ''
-    # text_path = '/home/nick/projects/devops/cs50_python/dna/sequences/5.txt'
-    # csv_path = '/home/nick/projects/devops/cs50_python/dna/databases/small.csv'
     csv_path = ''
     argc = len(sys.argv)
     for i in range(argc):
         if i == 1:
-            text_path = sys.argv[i]
-        if i == 2:
             csv_path = sys.argv[i]
-        print("argv[{:d}] = {}".format(i, sys.argv[i]))
-    print(sys.argv)
+        if i == 2:
+            text_path = sys.argv[i]
+
     list_str = []
     dict_person = {}
 
-    dna = read_text(csv_path)
-
-    data_list = read_csv(text_path)
+    dna = read_text(text_path)
+    data_list = read_csv(csv_path)
 
     create(data_list, dict_person, list_str)
-    # d = list_str[0]
     
-    # count_dna(dna, list_str)
-    # print(dict_person)
-    # print(list_str)
     match = match_dna(dna , dict_person, list_str)
-    # x = search_dna(dna, d)
-    # print(x)
+
     print(match)
-    print(argc)
 
 
 if __name__ == '__main__':
