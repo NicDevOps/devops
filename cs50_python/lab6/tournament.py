@@ -26,7 +26,7 @@ def main():
     # TODO: Read teams into memory from file
 
     counts = {}
-    for i in range(N):
+    for _ in range(N):
         winner = simulate_tournament(teams)
         if winner in counts:
             counts[winner] += 1
