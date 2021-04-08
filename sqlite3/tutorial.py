@@ -17,10 +17,10 @@ rows = cursor.execute("SELECT name, species, tank_number FROM fish").fetchall()
 print(rows)
 
 target_fish_name = "Jamie"
-rows = cursor.execute("SELECT name, species, tank_number FROM fish WHERE name = ?",
-(target_fish_name,),
-).fetchall()
-print(rows)
+# rows = cursor.execute("SELECT name, species, tank_number FROM fish WHERE name = ?",
+# (target_fish_name,),
+# ).fetchall()
+# print(rows)
 
 new_tank_number = 2
 moved_fish_name = "Sammy"
@@ -29,10 +29,10 @@ cursor.execute(
     (new_tank_number, moved_fish_name)
 )
 
-rows = cursor.execute("SELECT name, species, tank_number FROM fish").fetchall()
-print(rows)
+# rows = cursor.execute("SELECT name, species, tank_number FROM fish").fetchall()
+# print(rows)
 
-# release sammy into the wild ;)
+# # release sammy into the wild ;)
 
 released_fish_name = "Sammy"
 cursor.execute(
@@ -40,10 +40,35 @@ cursor.execute(
     (released_fish_name,)
 )
 
-rows = cursor.execute("SELECT name, species, tank_number FROM fish").fetchall()
-print(rows)
+# rows = cursor.execute("SELECT name, species, tank_number FROM fish").fetchall()
+# print(rows)
+
+
+# cursor.execute(
+#     "INSERT INTO fish (name, species, tank_number) VALUES (?, ?, ?)",
+#     (name, species, tank_number)
+# )
+
+# rows = cursor.execute("SELECT name, species, tank_number FROM fish").fetchall()
+# print(rows)
+
+name = 'Dori'
+species = 'surgeon_fish'
+tank_number = 8
 
 with closing(sqlite3.connect("aquarium.db")) as connection:
     with closing(connection.cursor()) as cursor:
-        rows = cursor.execute("SELECT 1").fetchall()
-        print(rows)
+        # rows = cursor.execute("SELECT 1").fetchall()
+        # print(rows)
+
+        cursor.execute(
+            "INSERT INTO fish (name, species, tank_number) VALUES (?, ?, ?)",
+            (name, species, tank_number)
+        )
+
+        result = cursor.execute(
+            "SELECT name, species, tank_number FROM fish"
+        ).fetchall()
+
+
+        print(result)
