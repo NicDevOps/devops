@@ -1,0 +1,21 @@
+dashboard:
+  enabled: true
+  domain: traefik.local
+kubernetes:
+  # namespaces:
+  #   - default
+  #   - kube-system
+  ingressEndpoint:
+    hostname: "localhost"
+    ip: "172.26.74.182"
+ssl:
+  enabled: true
+  insecureSkipVerify: true
+# service:
+#   nodePorts:
+#     http: 80
+#     https: 443
+# serviceType: NodePort
+rbac:
+  enabled: true
+priorityClassName: "system-cluster-critical"

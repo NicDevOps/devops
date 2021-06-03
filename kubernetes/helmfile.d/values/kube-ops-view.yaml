@@ -1,0 +1,6 @@
+ingress:
+  enabled: true
+  hostname: kov.local
+
+rbac:
+  create: true
