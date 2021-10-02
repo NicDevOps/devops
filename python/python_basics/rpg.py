@@ -34,10 +34,13 @@ def werewolf_ai(distance, target):
         pass
 
 
-monster_ai(8, "bob")
-monster_ai(1, "bob")
+# monster_ai(8, "bob")
+# monster_ai(1, "bob")
 
-werewolf_ai(10, "dude")
+# werewolf_ai(10, "dude")
+
+x = int(input("enter distance: "))
+monster_ai(x, "bob")
 
 # print("Player life is ", player_life)
 # print("Monster life is ", monster_life)
