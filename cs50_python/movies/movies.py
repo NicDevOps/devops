@@ -101,16 +101,51 @@ cursor = connection.cursor()
 
 # 9
 # sql_query = '''
-# SELECT DISTINCT people.name
-# FROM ((people INNER JOIN stars ON people.id = stars.person_id)
-# INNER JOIN movies ON stars.movie_id = movies.id)
+# SELECT DISTINCT name, birth
+# FROM people 
+# JOIN stars ON people.id = stars.person_id 
+# JOIN movies ON stars.movie_id = movies.id
 # WHERE year = '2004'
 # UNION
-# SELECT DISTINCT people.name
-# FROM ((people INNER JOIN directors ON people.id = directors.person_id)
-# INNER JOIN movies ON directors.movie_id = movies.id) 
-# WHERE year = '2004';
+# SELECT DISTINCT name, birth
+# FROM people 
+# JOIN directors ON people.id = directors.person_id
+# JOIN movies ON directors.movie_id = movies.id
+# WHERE year = '2004'
+# ORDER BY birth
 # '''
-# rows = cursor.execute(sql_query).fetchall()
-# print(rows)
+
+# sql_query = '''
+# SELECT DISTINCT people.name
+# FROM people
+# INNER JOIN directors ON people.id = directors.person_id
+# INNER JOIN movies ON directors.movie_id = movies.id 
+# WHERE year = '2004'
+# ORDER BY birth
+# '''
+
+# 10
+# sql_query = '''
+# SELECT DISTINCT name 
+# FROM people
+# JOIN directors ON people.id = directors.person_id
+# JOIN ratings ON directors.movie_id = ratings.movie_id
+# WHERE rating >= '9.0'
+# '''
+
+# 11
+# JOIN stars ON movies.id = stars.movie_id
+# JOIN people ON stars.movie_id = people.id
+# JOIN directors ON movies.id = directors.movie_id
+# JOIN people ON directors.movie_id = people.id
+# WHERE name = 'Chadwick Boseman'
+sql_query = '''
+SELECT title, rating
+FROM movies
+JOIN ratings ON movies.id = ratings.movie_id
+ORDER BY rating DESC
+LIMIT 5
+'''
+rows = cursor.execute(sql_query).fetchall()
+print(rows)
 
