@@ -115,15 +115,15 @@ cursor = connection.cursor()
 # ORDER BY birth
 # '''
 
-sql_query = '''
-SELECT DISTINCT name
-FROM people
-WHERE id IN (SELECT person_id FROM directors WHERE movie_id IN (SELECT id FROM movies WHERE year = '2004'))
-AND id IN (SELECT person_id FROM stars WHERE movie_id IN (SELECT id FROM movies WHERE year = '2004'))
-ORDER BY birth
-'''
-rows = cursor.execute(sql_query).fetchall()
-print(rows)
+# sql_query = '''
+# SELECT DISTINCT name
+# FROM people
+# WHERE id IN (SELECT person_id FROM directors WHERE movie_id IN (SELECT id FROM movies WHERE year = '2004'))
+# AND id IN (SELECT person_id FROM stars WHERE movie_id IN (SELECT id FROM movies WHERE year = '2004'))
+# ORDER BY birth
+# '''
+# rows = cursor.execute(sql_query).fetchall()
+# print(rows)
 
 
 # 10
@@ -136,18 +136,30 @@ print(rows)
 # '''
 
 # 11
-# JOIN stars ON movies.id = stars.movie_id
-# JOIN people ON stars.movie_id = people.id
-# JOIN directors ON movies.id = directors.movie_id
-# JOIN people ON directors.movie_id = people.id
-# WHERE name = 'Chadwick Boseman'
 # sql_query = '''
-# SELECT title, rating
+# SELECT title
 # FROM movies
-# JOIN ratings ON movies.id = ratings.movie_id
-# ORDER BY rating DESC
+# WHERE id IN (SELECT movie_id FROM ratings 
+# WHERE movie_id IN (SELECT movie_id FROM stars 
+# WHERE person_id IN (SELECT id FROM people WHERE name = 'Chadwick Boseman')))
 # LIMIT 5
 # '''
-# rows = cursor.execute(sql_query).fetchall()
-# print(rows)
+
+# 12
+# sql_query = '''
+# SELECT title
+# FROM movies
+# WHERE id IN (SELECT movie_id FROM stars 
+# WHERE person_id IN (SELECT id FROM people WHERE name = 'Helena Bonham Carter' AND name = 'Johnny Depp'))
+# '''
+
+# 13
+sql_query = '''
+SELECT ALL name
+FROM people
+WHERE id IN (SELECT person_id FROM stars WHERE movie_id IN (SELECT id FROM movies WHERE id IN (SELECT movie_id FROM stars WHERE person_id IN (SELECT id FROM people WHERE name = 'Kevin Bacon' AND birth = '1958'))))
+OR id IN (SELECT person_id FROM directors WHERE movie_id IN (SELECT id FROM movies WHERE id IN (SELECT movie_id FROM stars WHERE person_id IN (SELECT id FROM people WHERE name = 'Kevin Bacon' AND birth = '1958'))))
+'''
+rows = cursor.execute(sql_query).fetchall()
+print(rows)
 
