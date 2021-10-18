@@ -150,16 +150,40 @@ cursor = connection.cursor()
 # SELECT title
 # FROM movies
 # WHERE id IN (SELECT movie_id FROM stars 
-# WHERE person_id IN (SELECT id FROM people WHERE name = 'Helena Bonham Carter' AND name = 'Johnny Depp'))
+# WHERE person_id IN (SELECT id FROM people WHERE name = 'Helena Bonham Carter' OR name = 'Johnny Depp'))
+# '''
+# sql_query = '''
+# SELECT title FROM movies
+# INNER JOIN stars ON movies.id = stars.movie_id
+# INNER JOIN people ON people.id = stars.person_id
+# WHERE name = 'Helena Bonham Carter'
+# UNION
+# SELECT title FROM movies
+# INNER JOIN stars ON movies.id = stars.movie_id
+# INNER JOIN people ON people.id = stars.person_id
+# WHERE name = 'Johnny Depp'
 # '''
 
-# 13
+# sql_query = '''
+# SELECT title FROM movies
+#     JOIN stars AS s1 ON id = s1.movie_id
+#     JOIN stars AS s2 ON id = s2.movie_id
+#     WHERE s1.person_id = '136' AND s2.person_id = '307'
+# '''
 sql_query = '''
-SELECT ALL name
-FROM people
-WHERE id IN (SELECT person_id FROM stars WHERE movie_id IN (SELECT id FROM movies WHERE id IN (SELECT movie_id FROM stars WHERE person_id IN (SELECT id FROM people WHERE name = 'Kevin Bacon' AND birth = '1958'))))
-OR id IN (SELECT person_id FROM directors WHERE movie_id IN (SELECT id FROM movies WHERE id IN (SELECT movie_id FROM stars WHERE person_id IN (SELECT id FROM people WHERE name = 'Kevin Bacon' AND birth = '1958'))))
+SELECT title FROM movies
+    JOIN stars AS s1 ON id = s1.movie_id
+    JOIN stars AS s2 ON id = s2.movie_id
+    WHERE s1.person_id IN (SELECT id FROM people WHERE name = 'Helena Bonham Carter') 
+    AND s2.person_id IN (SELECT id FROM people WHERE name = 'Johnny Depp')
 '''
+# 13
+# sql_query = '''
+# SELECT ALL name
+# FROM people
+# WHERE id IN (SELECT person_id FROM stars WHERE movie_id IN (SELECT id FROM movies WHERE id IN (SELECT movie_id FROM stars WHERE person_id IN (SELECT id FROM people WHERE name = 'Kevin Bacon' AND birth = '1958'))))
+# OR id IN (SELECT person_id FROM directors WHERE movie_id IN (SELECT id FROM movies WHERE id IN (SELECT movie_id FROM stars WHERE person_id IN (SELECT id FROM people WHERE name = 'Kevin Bacon' AND birth = '1958'))))
+# '''
 rows = cursor.execute(sql_query).fetchall()
 print(rows)
 
