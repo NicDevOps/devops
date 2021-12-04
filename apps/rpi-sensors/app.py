@@ -7,7 +7,7 @@ GPIO.setmode(GPIO.BCM)
 
 t = Gauge('temperature', 'Temperature')
 h = Gauge('humidity', 'Humidity')
-i = Gauge('illuminance', 'Illuminance')
+# i = Gauge('illuminance', 'Illuminance')
 
 
 def RCtime(RCpin):
@@ -28,7 +28,7 @@ while True:
 
     try:
         humidity, temperature = Adafruit_DHT.read_retry(22, 17)
-        illuminance = RCtime(22)
+        # illuminance = RCtime(22)
     except Exception as e:
         print('!!!! we caught an exception !!!!')
         print(e)
@@ -39,10 +39,10 @@ while True:
     if humidity:
         h.set(humidity)
     
-    i.set(999)
+    # i.set(999)
 
     if temperature and humidity:
-        print(f'temperature: {temperature}\nhumidity: {humidity}\nilluminance: {illuminance}')
-
+        print(f'temperature: {temperature}\nhumidity: {humidity}')
+# \nilluminance: {illuminance}
     time.sleep(1)
 

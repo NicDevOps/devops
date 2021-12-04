@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     FILE *inptr = fopen(infile, "r");
     if (inptr == NULL)
     {
-        fprintf(stderr, "Could not open %s.\n", infile);
+        fprintf(stderr, "Could not open ! %s.\n", infile);
         return 4;
     }
 

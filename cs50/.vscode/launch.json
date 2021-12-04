@@ -10,7 +10,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/${fileBasenameNoExtension}",
-            "args": ["texts/lalaland.txt",],
+            "args": ["/home/nick/projects/devops/cs50/yard.bmp","/home/nick/projects/devops/cs50/",],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

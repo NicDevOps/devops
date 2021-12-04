@@ -9,7 +9,7 @@
                 // "${file}",
                 "${workspaceFolder}/cs50/${fileBasename}", "${workspaceFolder}/cs50/cs50.c", "${workspaceFolder}/cs50/utils.c",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}",
+                "${fileDirname}/${fileBasenameNoExtension}-bob",
                 "-lm" 
             ],
             "options": {
