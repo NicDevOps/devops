@@ -122,21 +122,23 @@ def register():
         if not request.form.get("username"):
             return apology("must provide username", 403)
 
-        # Ensure password was submitted
         elif not request.form.get("password"):
             return apology("must provide password", 403)
+
+        if request.form.get("password") != request.form.get("confirm"):
+            return apology("Password does not match!", 403)
 
         rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
 
         if len(rows) == 1:
-            return apology("username already exist!", 404)
+            return apology("username already exist!", 403)
         
         username = request.form.get("username")
         password = request.form.get("password")
         genhash = generate_password_hash(password)
         db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", username, genhash)
-        return render_template("registered.html")
 
+        return render_template("registered.html")
 
     return render_template("register.html")
     # return apology("TODO")
