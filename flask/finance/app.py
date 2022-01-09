@@ -26,7 +26,7 @@ Session(app)
 db = SQL("sqlite:///finance.db")
 
 # Make sure API key is set
-# if not os.environ.get("API_KEY"):
+# if not os.environ.get(API_KEY):
 #     raise RuntimeError("API_KEY not set")
 
 
@@ -111,7 +111,25 @@ def logout():
 @login_required
 def quote():
     """Get stock quote."""
-    return apology("TODO")
+    if request.method == "POST":
+        if not request.form.get("symbol"):
+            return apology("must provide a valid Symbol", 403)
+
+        quote = lookup(request.form.get("symbol"))
+
+        if quote == None:
+            return apology("Symbol not found", 404)
+
+        n = quote["name"]
+        p = quote["price"]
+        s = quote["symbol"]
+        c = quote["change"]
+
+        return render_template("quoted.html", get_name=n, get_price=p, get_symbol=s, get_change=c)
+
+    else:
+        return render_template("quote.html")
+    # return apology("TODO")
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -139,8 +157,11 @@ def register():
         db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", username, genhash)
 
         return render_template("registered.html")
+    
+    else:
+        return render_template("register.html")
 
-    return render_template("register.html")
+    
     # return apology("TODO")
 
 
