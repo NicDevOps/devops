@@ -26,8 +26,8 @@ Session(app)
 db = SQL("sqlite:///finance.db")
 
 # Make sure API key is set
-# if not os.environ.get(API_KEY):
-#     raise RuntimeError("API_KEY not set")
+if not os.environ.get('API_KEY'):
+    raise RuntimeError("API_KEY not set")
 
 
 @app.after_request
@@ -43,14 +43,60 @@ def after_request(response):
 @login_required
 def index():
     """Show portfolio of stocks"""
-    return apology("TODO")
+    user_id = session.get("user_id")
 
+    stocks = db.execute("SELECT stocks.symbol, stocks.shares_qty FROM users JOIN stocks ON users.id = stocks.user_id;")
+    cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
+    balance = cash[0]["cash"]
+
+    return render_template("index.html", stocks=stocks, balance=balance)
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
     """Buy shares of stock"""
-    return apology("TODO")
+
+    if request.method == "POST":
+        if not request.form.get("symbol"):
+            return apology("must provide a valid Symbol", 403)
+
+        elif not request.form.get("quantity"):
+            return apology("must provide a quantity", 403)
+
+        quote = lookup(request.form.get("symbol"))
+
+        if quote == None:
+            return apology("Symbol not found", 404)
+
+        p = quote["price"]
+        s = quote["symbol"]
+
+        symbol = request.form.get("symbol")
+        quantity = request.form.get("quantity")
+
+        user_id = session.get("user_id")
+       
+        cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
+        price = p * float(quantity)
+        balance = float(cash[0]["cash"]) - price 
+
+        if balance >= 0:
+            db.execute("UPDATE users SET cash = ? WHERE id = ?", balance, user_id)
+        else:
+            return apology("Not enough money")
+
+        stocks = db.execute("SELECT * FROM stocks WHERE symbol = ?", symbol)
+
+        if not stocks:
+            db.execute("INSERT INTO stocks (user_id, symbol, shares_qty) VALUES (?, ?, ?)",user_id, symbol, quantity)
+        else:
+            shares = db.execute("SELECT shares_qty FROM stocks WHERE user_id = ?", user_id)
+            new_quantity = int(quantity) + int(shares[0]["shares_qty"])
+            db.execute("UPDATE stocks SET shares_qty = ? WHERE symbol = ?", new_quantity, symbol)
+
+        return redirect("/")
+    else:
+        return render_template("buy.html")
 
 
 @app.route("/history")
@@ -154,6 +200,7 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
         genhash = generate_password_hash(password)
+        
         db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", username, genhash)
 
         return render_template("registered.html")
