@@ -107,7 +107,10 @@ def buy():
 @login_required
 def history():
     """Show history of transactions"""
-    return apology("TODO")
+    user_id = session.get("user_id")
+    orders = db.execute("SELECT orders.order_type, orders.symbol, orders.shares_num, orders.share_price, orders.total, orders.date FROM users JOIN orders ON users.id = orders.user_id;")
+
+    return render_template("history.html", orders=orders)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -220,4 +223,48 @@ def register():
 @login_required
 def sell():
     """Sell shares of stock"""
-    return apology("TODO")
+
+    if request.method == "POST":
+        if not request.form.get("symbol"):
+            return apology("must provide a valid Symbol", 403)
+
+        elif not request.form.get("quantity"):
+            return apology("must provide a quantity", 403)
+
+        quote = lookup(request.form.get("symbol"))
+
+        if quote == None:
+            return apology("Symbol not found", 404)
+
+        p = quote["price"]
+        s = quote["symbol"]
+
+        symbol = request.form.get("symbol")
+        quantity = request.form.get("quantity")
+
+        user_id = session.get("user_id")
+       
+        cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
+        price = p * float(quantity)
+        balance = float(cash[0]["cash"]) + price
+
+        shares = db.execute("SELECT shares_qty FROM stocks WHERE user_id = ?", user_id)
+        new_quantity = int(shares[0]["shares_qty"]) - int(quantity)
+
+        if new_quantity >= 0:
+            db.execute("UPDATE stocks SET shares_qty = ? WHERE symbol = ?", new_quantity, symbol)
+            db.execute("UPDATE users SET cash = ? WHERE id = ?", balance, user_id)
+        else:
+            return apology("Not enough share", 404)
+        
+        if new_quantity == 0:
+            db.execute("DELETE FROM stocks WHERE symbol = ? AND user_id = ?", symbol, user_id)
+
+        order_type = 'sell'
+        date = datetime.datetime.now()
+        db.execute("INSERT INTO orders (user_id, order_type, symbol, shares_num, share_price, total, date) VALUES (?, ?, ?, ?, ?, ?, ?)", user_id, order_type, symbol, quantity, p, price, date)
+
+        return redirect("/")
+
+    else:
+        return render_template("sell.html")
