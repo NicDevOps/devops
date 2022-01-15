@@ -45,7 +45,7 @@ def index():
     """Show portfolio of stocks"""
     user_id = session.get("user_id")
 
-    stocks = db.execute("SELECT stocks.symbol, stocks.shares_qty FROM users JOIN stocks ON users.id = stocks.user_id;")
+    stocks = db.execute("SELECT stocks.symbol, stocks.shares_qty FROM stocks WHERE user_id = ?", user_id)
     cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
     balance = cash[0]["cash"]
 
@@ -108,7 +108,7 @@ def buy():
 def history():
     """Show history of transactions"""
     user_id = session.get("user_id")
-    orders = db.execute("SELECT orders.order_type, orders.symbol, orders.shares_num, orders.share_price, orders.total, orders.date FROM users JOIN orders ON users.id = orders.user_id;")
+    orders = db.execute("SELECT order_type, symbol, shares_num, share_price, total, date FROM orders WHERE user_id = ?", user_id)
 
     return render_template("history.html", orders=orders)
 
