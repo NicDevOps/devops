@@ -1,5 +1,5 @@
 import os
-
+import datetime
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
@@ -93,6 +93,10 @@ def buy():
             shares = db.execute("SELECT shares_qty FROM stocks WHERE user_id = ?", user_id)
             new_quantity = int(quantity) + int(shares[0]["shares_qty"])
             db.execute("UPDATE stocks SET shares_qty = ? WHERE symbol = ?", new_quantity, symbol)
+
+        order_type = 'buy'
+        date = datetime.datetime.now()
+        db.execute("INSERT INTO orders (user_id, order_type, symbol, shares_num, share_price, total, date) VALUES (?, ?, ?, ?, ?, ?, ?)", user_id, order_type, symbol, quantity, p, price, date)
 
         return redirect("/")
     else:

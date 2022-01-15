@@ -115,6 +115,7 @@ CREATE TABLE orders (
     symbol TEXT NOT NULL,
     shares_num INTEGER,
     share_price INTEGER,
+    total INTEGER,
     date DATETIME,
     PRIMARY KEY(id),
     FOREIGN KEY(user_id) REFERENCES users(id)
