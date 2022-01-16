@@ -45,11 +45,25 @@ def index():
     """Show portfolio of stocks"""
     user_id = session.get("user_id")
 
-    stocks = db.execute("SELECT stocks.symbol, stocks.shares_qty FROM stocks WHERE user_id = ?", user_id)
+    shares = db.execute("SELECT symbol, name, shares_qty, price, total FROM stocks WHERE user_id = ?", user_id)
+
+    if shares:
+        for share in shares:
+            symbol = share["symbol"]
+            quote = lookup(share["symbol"])
+            price = quote["price"]
+            total_price = share["shares_qty"] * price 
+            db.execute("UPDATE stocks SET price = ? WHERE symbol = ?", price, symbol)
+            db.execute("UPDATE stocks SET total = ? WHERE symbol = ?", total_price, symbol)
+
+    stocks = db.execute("SELECT symbol, name, shares_qty, price, total FROM stocks WHERE user_id = ?", user_id)
     cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
     balance = cash[0]["cash"]
 
-    return render_template("index.html", stocks=stocks, balance=balance)
+    p = stocks[0]["total"]
+    total = p + cash[0]["cash"]
+
+    return render_template("index.html", stocks=stocks, balance=balance, total=total)
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
@@ -70,6 +84,7 @@ def buy():
 
         p = quote["price"]
         s = quote["symbol"]
+        n = quote["name"]
 
         symbol = request.form.get("symbol")
         quantity = request.form.get("quantity")
@@ -77,8 +92,8 @@ def buy():
         user_id = session.get("user_id")
        
         cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
-        price = p * float(quantity)
-        balance = float(cash[0]["cash"]) - price 
+        total = p * float(quantity)
+        balance = float(cash[0]["cash"]) - total
 
         if balance >= 0:
             db.execute("UPDATE users SET cash = ? WHERE id = ?", balance, user_id)
@@ -88,7 +103,7 @@ def buy():
         stocks = db.execute("SELECT * FROM stocks WHERE symbol = ?", symbol)
 
         if not stocks:
-            db.execute("INSERT INTO stocks (user_id, symbol, shares_qty) VALUES (?, ?, ?)",user_id, symbol, quantity)
+            db.execute("INSERT INTO stocks (user_id, symbol, name, shares_qty, price, total) VALUES (?, ?, ?, ?, ?, ?)",user_id, symbol, n, quantity, p, total)
         else:
             shares = db.execute("SELECT shares_qty FROM stocks WHERE user_id = ?", user_id)
             new_quantity = int(quantity) + int(shares[0]["shares_qty"])
@@ -96,7 +111,7 @@ def buy():
 
         order_type = 'buy'
         date = datetime.datetime.now()
-        db.execute("INSERT INTO orders (user_id, order_type, symbol, shares_num, share_price, total, date) VALUES (?, ?, ?, ?, ?, ?, ?)", user_id, order_type, symbol, quantity, p, price, date)
+        db.execute("INSERT INTO orders (user_id, order_type, symbol, shares_num, share_price, total, date) VALUES (?, ?, ?, ?, ?, ?, ?)", user_id, order_type, symbol, quantity, p, total, date)
 
         return redirect("/")
     else:
@@ -109,7 +124,7 @@ def history():
     """Show history of transactions"""
     user_id = session.get("user_id")
     orders = db.execute("SELECT order_type, symbol, shares_num, share_price, total, date FROM orders WHERE user_id = ?", user_id)
-
+    print(orders)
     return render_template("history.html", orders=orders)
 
 
@@ -245,14 +260,16 @@ def sell():
         user_id = session.get("user_id")
        
         cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
-        price = p * float(quantity)
-        balance = float(cash[0]["cash"]) + price
+        total = p * float(quantity)
+        balance = float(cash[0]["cash"]) + total
 
         shares = db.execute("SELECT shares_qty FROM stocks WHERE user_id = ?", user_id)
         new_quantity = int(shares[0]["shares_qty"]) - int(quantity)
 
         if new_quantity >= 0:
             db.execute("UPDATE stocks SET shares_qty = ? WHERE symbol = ?", new_quantity, symbol)
+            db.execute("UPDATE stocks SET price = ? WHERE symbol = ?", p, symbol)
+            db.execute("UPDATE stocks SET total = ? WHERE symbol = ?", total, symbol)
             db.execute("UPDATE users SET cash = ? WHERE id = ?", balance, user_id)
         else:
             return apology("Not enough share", 404)
@@ -262,7 +279,7 @@ def sell():
 
         order_type = 'sell'
         date = datetime.datetime.now()
-        db.execute("INSERT INTO orders (user_id, order_type, symbol, shares_num, share_price, total, date) VALUES (?, ?, ?, ?, ?, ?, ?)", user_id, order_type, symbol, quantity, p, price, date)
+        db.execute("INSERT INTO orders (user_id, order_type, symbol, shares_num, share_price, total, date) VALUES (?, ?, ?, ?, ?, ?, ?)", user_id, order_type, symbol, quantity, p, total, date)
 
         return redirect("/")
 
