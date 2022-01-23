@@ -1,5 +1,7 @@
 import os
 import datetime
+import json
+from binance.client import Client
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
@@ -295,3 +297,33 @@ def sell():
 
     else:
         return render_template("sell.html")
+
+@app.route("/graph", methods=["GET", "POST"])
+@login_required
+def graph():
+
+    api_key = os.environ.get("API_KEY")
+    api_secret = os.environ.get("API_SECRET")
+    client = Client(api_key, api_secret)
+
+    candles = client.get_historical_klines("BTCUSDT", Client.KLINE_INTERVAL_1MINUTE, "1 day ago UTC")
+
+    processed_candles = []
+
+    for data in candles:
+        
+        candle = {
+
+            "time": data[0] / 1000, 
+            "open": data[1], 
+            "high": data[2], 
+            "low": data[3], 
+            "close": data[4] 
+        }
+
+    processed_candles.append(candle)
+
+    y = json.dumps(processed_candles)
+
+    return render_template("graph.html", candle=y)
+

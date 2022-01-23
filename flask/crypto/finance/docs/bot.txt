@@ -1,0 +1,9 @@
+
+Binance Part 1 websockets and real time lightweight charts
+
+use wscat to test on terminal
+
+wss://stream.binance.com:9443/ws/btcusdt@trade
+wss://stream.binance.com:9443/ws/btcusdt@kline_5m
+
+{'e': 'kline', 'E': 1642715269314, 's': 'BTCUSDT', 'k': {'t': 1642715220000, 'T': 1642715279999, 's': 'BTCUSDT', 'i': '1m', 'f': 1227213954, 'L': 1227215572, 'o': '41743.30000000', 'c': '41638.02000000', 'h': '41746.82000000', 'l': '41594.40000000', 'v': '108.15062000', 'n': 1619, 'x': False, 'q': '4502183.10137750', 'V': '53.94078000', 'Q': '2244944.81579610', 'B': '0'}}

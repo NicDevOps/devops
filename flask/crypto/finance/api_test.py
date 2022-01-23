@@ -14,7 +14,7 @@ response = client.get_symbol_ticker(symbol="BTCUSDT")
 
 prices = client.get_all_tickers()
 
-klines = client.get_historical_klines("BNBBTC", Client.KLINE_INTERVAL_1MINUTE, "1 day ago UTC")
+klines = client.get_historical_klines("BNBBTC", Client.KLINE_INTERVAL_5MINUTE, "1 day ago UTC")
 
 # pprint.pprint(klines)
 # pprint.pprint(prices)
@@ -41,4 +41,4 @@ def handle_dcm_message(depth_cache):
 
 twm.start_kline_socket(callback=handle_socket_message, symbol='BTCUSDT')
 
-dcm.start_depth_cache(callback=handle_dcm_message, symbol='BTCUSDT')
+# dcm.start_depth_cache(callback=handle_dcm_message, symbol='BTCUSDT')

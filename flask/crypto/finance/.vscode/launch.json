@@ -12,8 +12,8 @@
             "env": {
                 "FLASK_APP": "app.py",
                 "FLASK_ENV": "development",
-                "api_key": "8V8sV8Lj710Ye3uGXWuiI6P7iHoPcBbY4EEi79KDSpoiWCOrfnkEOxx8cyOX8czP",
-                "api_secret": "Qisu0BBEOncdSAHAblBVqBlPMf3nvskHc8cNPjhFbsg3HFBgPHf0cnwpMJFclNGY"
+                "API_KEY": "DGmRABb3TFuqGaN0e8aSuUgsbbj1O4JMc9A29TdWPUcAQp7G1dgdzkA5U91o6C4K",
+                "API_SECRET": "16Vfmdq607RLtgaRMUGy3uGdjylnCHBtpXxTgIs761Ubruobi0zi7yzkg14sLM7O"
             },
             "args": [
                 "run",

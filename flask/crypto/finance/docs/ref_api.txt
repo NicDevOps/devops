@@ -1,0 +1,25 @@
+    "e": "aggTrade",                # event type
+    "E": 1499405254326,             # event time
+    "s": "ETHBTC",                  # symbol
+    "a": 70232,                             # aggregated tradeid
+    "p": "0.10281118",              # price
+    "q": "8.15632997",              # quantity
+    "f": 77489,                             # first breakdown trade id
+    "l": 77489,                             # last breakdown trade id
+    "T": 1499405254324,             # trade time
+    "m": false,                             # whether buyer is a maker
+    "M": true                               # can be ignored
+    
+    recv {
+    'e': 'trade', 
+    'E': 1642575481865, 
+    's': 'BTCUSDT', 
+    't': 1225619414, 
+    'p': '41713.90000000', 
+    'q': '0.00110000', 
+    'b': 9035570500, 
+    'a': 9035570655, 
+    'T': 1642575481864, 
+    'm': True, 
+    'M': True
+    }
