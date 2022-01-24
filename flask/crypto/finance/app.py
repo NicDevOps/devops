@@ -3,7 +3,7 @@ import datetime
 import json
 from binance.client import Client
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, flash, redirect, render_template, request, session, jsonify
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -302,18 +302,23 @@ def sell():
 @login_required
 def graph():
 
+    return render_template("graph.html")
+
+
+@app.route("/chart", methods=["GET", "POST"])
+@login_required
+def chart():
     api_key = os.environ.get("API_KEY")
     api_secret = os.environ.get("API_SECRET")
     client = Client(api_key, api_secret)
 
-    candles = client.get_historical_klines("BTCUSDT", Client.KLINE_INTERVAL_1MINUTE, "1 day ago UTC")
+    candles = client.get_historical_klines("BTCUSDT", Client.KLINE_INTERVAL_5MINUTE, "1 day ago UTC")
 
     processed_candles = []
 
     for data in candles:
         
         candle = {
-
             "time": data[0] / 1000, 
             "open": data[1], 
             "high": data[2], 
@@ -321,9 +326,10 @@ def graph():
             "close": data[4] 
         }
 
-    processed_candles.append(candle)
+        processed_candles.append(candle)
+    # print(processed_candles)
+    # return json.dumps(processed_candles)
+    return jsonify(processed_candles)
 
-    y = json.dumps(processed_candles)
 
-    return render_template("graph.html", candle=y)
 

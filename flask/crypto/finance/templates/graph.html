@@ -24,12 +24,10 @@
             Oversold
             <input type="text" id="rsi_lenght" name="rsi_lenght" placeholder="70" />
         </div>
-        <div>
-            {{candle}}
-        </div>
+
         <script>
-            var binanceSocket = new WebSocket("wss://stream.binance.us:9443/ws/btcusdt@kline_5m");
-            var tradeDiv = document.getElementById('trades')
+            // var binanceSocket = new WebSocket("wss://stream.binance.us:9443/ws/btcusdt@kline_5m");
+            // var tradeDiv = document.getElementById('trades')
 
             // binanceSocket.onmessage = function (event) {
             //     console.log(event.data);

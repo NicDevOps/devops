@@ -60,28 +60,3 @@ def lookup(symbol):
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
-
-def graph():
-
-    api_key = os.environ.get("API_KEY")
-    api_secret = os.environ.get("API_SECRET")
-    client = Client(api_key, api_secret)
-
-    candles = client.get_historical_klines("BTCUSDT", Client.KLINE_INTERVAL_1MINUTE, "1 day ago UTC")
-
-    processed_candles = []
-
-    for data in candles:
-        
-        candle = {
-
-            "time": data[0] / 1000, 
-            "open": data[1], 
-            "high": data[2], 
-            "low": data[3], 
-            "close": data[4] 
-        }
-
-    processed_candles.append(candle)
-
-    return jsonify(processed_candles)

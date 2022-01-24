@@ -25,21 +25,40 @@ var chart = LightweightCharts.createChart(document.getElementById('chart'), {
 });
 
 var candleSeries = chart.addCandlestickSeries({
-  upColor: 'rgba(255, 144, 0, 1)',
-  downColor: '#000',
+  upColor: '#00ff00',
+  downColor: '#ff0000',
   borderDownColor: 'rgba(255, 144, 0, 1)',
   borderUpColor: 'rgba(255, 144, 0, 1)',
   wickDownColor: 'rgba(255, 144, 0, 1)',
   wickUpColor: 'rgba(255, 144, 0, 1)',
 });
 
-fetch('http://172.27.238.40:5000/graph')
+fetch('http://172.27.238.40:5000/chart')
 	
 	.then((r) => r.json())
 	.then((response) => {
 		console.log(response)
 		candleSeries.setData(response);
 	})
+
+
+var binanceSocket = new WebSocket("wss://stream.binance.us:9443/ws/btcusdt@kline_5m");
+
+binanceSocket.onmessage = function (event) {
+
+	var message =  JSON.parse(event.data);
+	var candlestick = message.k;
+
+	candleSeries.update({
+		time: candlestick.t / 1000,
+		open: candlestick.o,
+		high: candlestick.h,
+		low: candlestick.l,
+		close: candlestick.c
+	})
+}
+
+
 
 // candleSeries.setData([
 // 	{ time: '2018-10-19', open: 180.34, high: 180.99, low: 178.57, close: 179.85 },
