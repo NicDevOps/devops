@@ -1,6 +1,6 @@
 from numpy import genfromtxt
 import talib
-
+from patterns import patterns
 # close = numpy.random.random(100)
 
 # print(close)

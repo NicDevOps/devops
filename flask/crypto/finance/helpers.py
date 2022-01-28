@@ -1,6 +1,7 @@
 import os
+import json
 import requests
-# import urllib.parse
+import urllib.parse
 from binance.client import Client
 from flask import redirect, render_template, request, session
 from functools import wraps
@@ -60,3 +61,42 @@ def lookup(symbol):
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
+
+def iex_lookup(symbol):
+    """Look up quote for symbol."""
+
+    # Contact API
+    try:
+        api_key = os.environ.get("API_KEY")
+        url = f"https://cloud.iexapis.com/stable/stock/{urllib.parse.quote_plus(symbol)}/quote?token={api_key}"
+        response = requests.get(url)
+        response.raise_for_status()
+    except requests.RequestException:
+        return None
+
+    # Parse response
+    try:
+        quote = response.json()
+        return {
+            "name": quote["companyName"],
+            "price": float(quote["latestPrice"]),
+            "symbol": quote["symbol"],
+        }
+    except (KeyError, TypeError, ValueError):
+        return None
+
+
+def get_klines(symbol, start, end):
+    api_key = os.environ.get("api_key")
+    api_secret = os.environ.get("api_secret")
+
+    client = Client(api_key, api_secret)
+
+    asset = symbol
+    start_date = start
+    end_date = end
+    timeframe = "1d"
+
+    data  = client.get_historical_klines(asset, timeframe, start_date, end_date)
+
+    return data

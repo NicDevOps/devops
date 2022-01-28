@@ -1,3 +1,5 @@
 flask_session
 .vscode
 launch.json
+.csv
+data/daily_year

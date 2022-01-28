@@ -21,3 +21,15 @@ nav .navbar-brand .green
 {
     color: #2e944b;
 }
+.bullish
+{
+    background: green; color: white;
+}
+.bearish
+{
+    background: red; color: white;
+}
+td
+{
+    padding: 10px;
+}
