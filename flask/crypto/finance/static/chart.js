@@ -33,7 +33,7 @@ var candleSeries = chart.addCandlestickSeries({
   wickUpColor: 'rgba(255, 144, 0, 1)',
 });
 
-fetch('http://172.29.138.115:5000/chart')
+fetch('http://172.19.1.127:5000/chart')
 	
 	.then((r) => r.json())
 	.then((response) => {

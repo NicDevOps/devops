@@ -1,4 +1,5 @@
 import os
+import time
 import datetime
 import json
 import csv
@@ -12,7 +13,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, lookup, usd
+from helpers import apology, login_required, lookup, usd, get_exchange
 
 # Configure application
 app = Flask(__name__)
@@ -340,16 +341,18 @@ def chart():
 @login_required
 def screen():
     stocks = {}
-    with open('data/datasets.csv') as f:
-        for row in csv.reader(f):
-            stocks[row[0]] = {'Currency' : 'crypto'}
+    symbols = get_exchange()
+
+    for s in symbols:
+        stocks[s] = {'Currency' : 'crypto'}
     
     current_pattern = request.args.get('pattern', None)
+
     if current_pattern:
+        pattern_function = getattr(talib, current_pattern)
         datafiles = os.listdir('data/daily_year')
         for filename in datafiles:
             df = pd.read_csv('data/daily_year/{}'.format(filename))
-            pattern_function = getattr(talib, current_pattern)
 
             symbol = filename.split('.')[0]
             
@@ -383,21 +386,22 @@ def snapshot():
     end="2022.23.1"
     timeframe="1d"
 
-    with open("data/datasets.csv") as f:
-        companies = f.read().splitlines()
-        try:
-            for company in companies:
-                symbol = company.split(',')[0]
-                df = pd.DataFrame(client.get_historical_klines(symbol, timeframe,start,end))
-                df=df.iloc[:,:6]
-                df.columns=["Date","Open","High","Low","Close","Volume"]
-                df=df.set_index("Date")
-                df.index=pd.to_datetime(df.index,unit="ms")
-                df=df.astype("float")
-                df.to_csv('data/daily_year/{}'.format(symbol))
-        except:
-            pass
+    symbols = get_exchange()
     
+    try:
+        for s in symbols:
+            print(s)
+            df = pd.DataFrame(client.get_historical_klines(s, timeframe,start,end))
+            if df.empty:
+                print('Your df is empty...')
+                continue
+            print(df)
+            df=df.iloc[:,:6]
+            df.columns=["Date","Open","High","Low","Close","Volume"]
+            df=df.set_index("Date")
+            df.index=pd.to_datetime(df.index,unit="ms")
+            df=df.astype("float")
+            df.to_csv('data/daily_year/{}'.format(s))
+    except:
+        pass
     return render_template("screener.html")
-
-    
