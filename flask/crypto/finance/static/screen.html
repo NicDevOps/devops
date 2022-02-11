@@ -1,0 +1,68 @@
+
+<html>
+<head>
+    <script src=https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js></script>
+</head>
+    <body>
+
+        <div id="chart"></div>
+        <script>
+            var chart = LightweightCharts.createChart(document.getElementById('chart'), {
+                width: 600,
+                height: 300,
+                layout: {
+                    backgroundColor: '#000000',
+                    textColor: 'rgba(255, 255, 255, 0.9)',
+                },
+                grid: {
+                    vertLines: {
+                        color: 'rgba(197, 203, 206, 0.5)',
+                    },
+                    horzLines: {
+                        color: 'rgba(197, 203, 206, 0.5)',
+                    },
+                },
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal,
+                },
+                rightPriceScale: {
+                    borderColor: 'rgba(197, 203, 206, 0.8)',
+                },
+                timeScale: {
+                    borderColor: 'rgba(197, 203, 206, 0.8)',
+                },
+            });
+
+            var candleSeries = chart.addCandlestickSeries({
+                upColor: '#00ff00',
+                downColor: '#ff0000',
+                borderDownColor: 'rgba(255, 144, 0, 1)',
+                borderUpColor: 'rgba(255, 144, 0, 1)',
+                wickDownColor: 'rgba(255, 144, 0, 1)',
+                wickUpColor: 'rgba(255, 144, 0, 1)',
+            });
+
+
+            // console.log({{ processed_candles }})
+            // candleSeries.setData({{ processed_candles }});
+            // console.log("hello");
+            // var x = "{{processed_candles}}";
+            // var decoded = x.replace("&#39;", "'");
+            // console.log(decoded);
+            const queryString = window.location.search;
+            console.log(queryString);
+            const urlParams = new URLSearchParams(queryString);
+            const stock = urlParams.get('stock')
+            console.log(stock);
+
+            fetch('http://172.21.241.131:5000/get_graph?stock=' + stock)
+
+            .then((r) => r.json())
+            .then((response) => {
+                console.log(response);
+                candleSeries.setData(response);
+            })
+
+        </script>
+    </body>
+</html>

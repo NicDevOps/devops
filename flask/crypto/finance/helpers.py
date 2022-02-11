@@ -99,3 +99,19 @@ def get_exchange():
         symbols.append(s['symbol'])
 
     return symbols
+
+def get_klines(symbol, start, end):
+    api_key = os.environ.get("api_key")
+    api_secret = os.environ.get("api_secret")
+
+    client = Client(api_key, api_secret)
+
+    asset = symbol
+    start_date = start
+    end_date = end
+    timeframe = "1d"
+
+    data  = client.get_historical_klines(asset, timeframe, start_date, end_date)
+
+    return data
+

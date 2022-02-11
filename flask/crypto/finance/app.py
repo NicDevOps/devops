@@ -373,7 +373,7 @@ def screen():
 
     return render_template("screener.html", patterns=patterns, stocks=stocks, current_pattern=current_pattern)
 
-@app.route("/snapshot", methods=["GET", "POST"])
+@app.route("/snapshot")
 @login_required
 def snapshot():
 
@@ -405,3 +405,35 @@ def snapshot():
     except:
         pass
     return render_template("screener.html")
+
+@app.route("/get_graph", methods=["GET", "POST"])
+@login_required
+def get_graph():
+    stock = request.args.get('stock', None)
+
+    api_key = os.environ.get("API_KEY")
+    api_secret = os.environ.get("API_SECRET")
+    client = Client(api_key, api_secret)
+
+    processed_candles = []
+
+    start="2020.10.1"
+    end="2022.23.1"
+    timeframe="1d"
+
+    candles = client.get_historical_klines(stock, timeframe,start,end)
+
+    for data in candles:
+        
+        candle = {
+            "time": data[0] / 1000, 
+            "open": data[1], 
+            "high": data[2], 
+            "low": data[3], 
+            "close": data[4] 
+        }
+
+        processed_candles.append(candle)
+    # print("testing JSON " + str(type(processed_candles)))
+    # print(processed_candles)
+    return jsonify(processed_candles)
